@@ -50,7 +50,9 @@ module.exports = {
           .get('https://arcane-mesa-86933.herokuapp.com/api/neuron')
           .then(async (res) => {
             await interaction.editReply(
-              `${res.data.neuron[Number(uid)].stake}`,
+              `The ${mechanism} value for ${uid} is ${
+                res.data.neuron[Number(uid)].stake / 1000000000
+              }`,
               {
                 ephemeral: false,
               }
