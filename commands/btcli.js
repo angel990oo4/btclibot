@@ -2,8 +2,7 @@ const {
     SlashCommandBuilder,
     ActionRowBuilder,
     SelectMenuBuilder,
-    ModalBuilder,
-    TextInputBuilder,
+    ModalBuilder,TextInputBuilder,
     TextInputStyle,
   } = require("discord.js");
   const wait = require("node:timers/promises").setTimeout;
@@ -11,8 +10,18 @@ const {
   module.exports = {
     data: new SlashCommandBuilder()
       .setName("btcli")
-      .setDescription("Bittensor discord cli"),
-  
+      .setDescription("Bittensor Discord Cli")
+      .addStringOption(option =>
+        option.setName('mechanism')
+            .setDescription('command')
+            .setRequired(true)
+            .addChoices({ name: 'Stake', value: 'stake' }))
+      .addStringOption(option =>
+        option.setName('uid')
+            .setDescription('UID for Stake value')
+            .setRequired(true)),
+
+
       async execute(interaction) {
         await interaction.reply('Pong')
     }
