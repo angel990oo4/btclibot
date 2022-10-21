@@ -17,8 +17,8 @@ module.exports = {
     .setDescription('Bittensor Discord Cli')
     .addStringOption((option) =>
       option
-        .setName('mechanism')
-        .setDescription('mechanism')
+        .setName('command')
+        .setDescription('command')
         .setRequired(true)
         .addChoices({ name: 'stake', value: 'stake' })
     )
@@ -30,7 +30,7 @@ module.exports = {
     ),
 
   async execute(interaction) {
-    const mechanism = interaction.options.getString('mechanism');
+    const mechanism = interaction.options.getString('command');
     const uid = interaction.options.getString('uid');
     console.log('mechanism', mechanism);
     console.log('uid', uid);
@@ -50,9 +50,9 @@ module.exports = {
           .get('https://arcane-mesa-86933.herokuapp.com/api/neuron')
           .then(async (res) => {
             await interaction.editReply(
-              `The ${mechanism} value for ${uid} is ${
+              `UID:${uid} has τ${
                 res.data.neuron[Number(uid)].stake / 1000000000
-              }`,
+              } staked `,
               {
                 ephemeral: false,
               }
