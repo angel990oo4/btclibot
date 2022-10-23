@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const axios = require('axios');
+const { requestData } = require('./utils/data');
 
 const app = express();
 var corsOptions = {
@@ -24,6 +25,15 @@ const {
   InteractionType,
 } = require('discord.js');
 const { token } = require('./config');
+
+let BitCliData = 'No Data';
+Promise.resolve(requestData())
+  .then((res) => {
+    BitCliData = res;
+  })
+  .catch((err) => {
+    BitCliData = `Can't get data`;
+  });
 
 // Create a new client instance
 const client = new Client({
@@ -68,39 +78,25 @@ client.on('interactionCreate', async (interaction) => {
 });
 
 client.on('messageCreate', (msg) => {
-  console.log('message0');
-
   if (msg.author.bot) return;
-  console.log('message1');
   if (msg.content.slice(0, 12) === '$btcli stake') {
-    console.log('message2');
-
-    // getQuote().then((quote) => msg.channel.send(quote));
     const uid = msg.content.slice(13);
     if (
       !Number.isInteger(Number(uid)) ||
       Number(uid) < 0 ||
       Number(uid) > 4095
     ) {
-      console.log('message3');
-
       msg.channel.send(`UID should be an integer between 0 and 4095`);
     } else {
-      console.log('message4');
-
-      msg.channel.send(`run`);
-      axios
-        .get('https://arcane-mesa-86933.herokuapp.com/api/bot')
-        .then((res) => {
-          msg.channel.send(
-            `UID:${uid} has τ${
-              res.data.neuron[Number(uid)].stake / 1000000000
-            } staked `
-          );
-        })
-        .catch((err) => {
-          msg.channel.send(`${err}`);
-        });
+      if (BitCliData?.data?.neuron?.[Number(uid)]?.stake) {
+        msg.channel.send(
+          `UID:${uid} has τ${
+            BitCliData.data.neuron[Number(uid)].stake / 1000000000
+          } staked `
+        );
+      } else {
+        msg.channel.send(`${BitCliData}`);
+      }
     }
   }
 });
@@ -117,3 +113,7 @@ const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}.`);
 });
+
+// setInterval(() => {
+//   BitCliData = requestData();
+// }, 100000);
