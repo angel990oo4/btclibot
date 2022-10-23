@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const axios = require('axios');
 
 const app = express();
 var corsOptions = {
@@ -25,7 +26,14 @@ const {
 const { token } = require('./config');
 
 // Create a new client instance
-const client = new Client({ intents: [GatewayIntentBits.Guilds] });
+const client = new Client({
+  intents: [
+    GatewayIntentBits.Guilds,
+    GatewayIntentBits.GuildMessages,
+    GatewayIntentBits.MessageContent,
+    GatewayIntentBits.GuildMessageReactions,
+  ],
+});
 
 client.commands = new Collection();
 const commandsPath = path.join(__dirname, 'commands');
@@ -56,6 +64,44 @@ client.on('interactionCreate', async (interaction) => {
       content: 'There was an error while executing this command!',
       ephemeral: true,
     });
+  }
+});
+
+client.on('messageCreate', (msg) => {
+  console.log('message0');
+
+  if (msg.author.bot) return;
+  console.log('message1');
+  if (msg.content.slice(0, 12) === '$btcli stake') {
+    console.log('message2');
+
+    // getQuote().then((quote) => msg.channel.send(quote));
+    const uid = msg.content.slice(13);
+    if (
+      !Number.isInteger(Number(uid)) ||
+      Number(uid) < 0 ||
+      Number(uid) > 4095
+    ) {
+      console.log('message3');
+
+      msg.channel.send(`UID should be an integer between 0 and 4095`);
+    } else {
+      console.log('message4');
+
+      msg.channel.send(`run`);
+      axios
+        .get('https://arcane-mesa-86933.herokuapp.com/api/bot')
+        .then((res) => {
+          msg.channel.send(
+            `UID:${uid} has τ${
+              res.data.neuron[Number(uid)].stake / 1000000000
+            } staked `
+          );
+        })
+        .catch((err) => {
+          msg.channel.send(`${err}`);
+        });
+    }
   }
 });
 
