@@ -172,4 +172,4 @@ app.listen(PORT, () => {
 
 setInterval(() => {
   getNeurons();
-}, 100000);
+}, 300000);
