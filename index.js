@@ -35,6 +35,12 @@ Promise.resolve(requestData())
     BitCliData = `Can't get data`;
   });
 
+//integrate polkadot for bittensor substrate
+const { NETWORKS } = require('./config/network');
+
+const { api } = require('./polkadot/api');
+const apiCtx = api(NETWORKS[0].endpoints);
+
 // Create a new client instance
 const client = new Client({
   intents: [
