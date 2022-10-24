@@ -42,9 +42,8 @@ let NeuronData = 'No Data';
 const getNeurons = async () => {
   try {
     NeuronData = await realNeuron();
-    console.log('NeuronData', NeuronData);
   } catch (err) {
-    getNeurons = err;
+    console.log('err', err);
   }
 };
 getNeurons();
