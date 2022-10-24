@@ -99,6 +99,43 @@ client.on('messageCreate', (msg) => {
       }
     }
   }
+  if (msg.content.slice(0, 14) === '$btcli inspect') {
+    const uid = msg.content.slice(15);
+    if (
+      !Number.isInteger(Number(uid)) ||
+      Number(uid) < 0 ||
+      Number(uid) > 4095
+    ) {
+      msg.channel.send(`UID should be an integer between 0 and 4095`);
+    } else {
+      if (BitCliData?.data?.neuron?.[Number(uid)]?.stake) {
+        // msg.channel.send(`UID:${uid} has`);
+        msg.channel.send(
+          `{\nhotkey: ${
+            BitCliData.data.neuron[Number(uid)].hotkey
+          }\ncoldkey : ${BitCliData.data.neuron[Number(uid)].coldkey}\nstake: ${
+            BitCliData.data.neuron[Number(uid)].stake / 1000000000
+          }\nrank: ${
+            BitCliData.data.neuron[Number(uid)].rank / 18446744073709551615
+          }\ntrust: ${
+            BitCliData.data.neuron[Number(uid)].trust / 18446744073709551615
+          }\nconsensus: ${
+            BitCliData.data.neuron[Number(uid)].consensus / 18446744073709551615
+          }\nincentive: ${
+            BitCliData.data.neuron[Number(uid)].incentive / 18446744073709551615
+          }\ndividends: ${
+            BitCliData.data.neuron[Number(uid)].dividends / 18446744073709551615
+          }\nemission: ${
+            BitCliData.data.neuron[Number(uid)].emission / 1000000000
+          }\nactive: ${
+            BitCliData.data.neuron[Number(uid)].active ? 'true' : 'false'
+          }\n}`
+        );
+      } else {
+        msg.channel.send(`${BitCliData}`);
+      }
+    }
+  }
 });
 
 client.login(token);
@@ -114,6 +151,12 @@ app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}.`);
 });
 
-// setInterval(() => {
-//   BitCliData = requestData();
-// }, 100000);
+setInterval(() => {
+  Promise.resolve(requestData())
+    .then((res) => {
+      BitCliData = res;
+    })
+    .catch((err) => {
+      BitCliData = `Can't get data`;
+    });
+}, 100000);
