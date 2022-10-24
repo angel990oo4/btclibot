@@ -36,11 +36,12 @@ Promise.resolve(requestData())
   });
 
 //integrate polkadot for bittensor substrate
-const { NETWORKS } = require('./config/network');
+// const { NETWORKS } = require('./config/network');
+// const { getNeurons } = require('./polkadot/query');
 
-const { api } = require('./polkadot/api');
-const apiCtx = api(NETWORKS[0].endpoints);
-
+// const { api } = require('./polkadot/api');
+// const apiCtx = await api(NETWORKS[0].endpoints);
+// const result = await getNeurons(apiCtx);
 // Create a new client instance
 const client = new Client({
   intents: [
