@@ -113,6 +113,7 @@ client.on('messageCreate', (msg) => {
   }
   if (msg.content.slice(0, 14) === '$btcli inspect') {
     const uid = msg.content.slice(14);
+    console.log('btcli inspect', uid);
     if (
       !Number.isInteger(Number(uid)) ||
       Number(uid) < 0 ||
