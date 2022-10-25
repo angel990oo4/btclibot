@@ -45,7 +45,7 @@ const { NETWORKS } = require('./config/network');
 const { api } = require('./polkadot/api');
 
 const getNeurons = async () => {
-  let = myInterval;
+  let myInterval;
   try {
     const apiCtx = await api(NETWORKS[0].endpoints);
     NeuronData = await realNeuron(apiCtx);
