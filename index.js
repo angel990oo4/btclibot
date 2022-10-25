@@ -52,7 +52,7 @@ const getNeurons = async () => {
       NeuronData = await realNeuron(apiCtx);
     }, 120000);
   } catch (err) {
-    console.log('err', err);
+    console.log('error', err);
   }
 };
 getNeurons();
