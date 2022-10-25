@@ -45,14 +45,16 @@ const { NETWORKS } = require('./config/network');
 const { api } = require('./polkadot/api');
 
 const getNeurons = async () => {
+  let = myInterval;
   try {
     const apiCtx = await api(NETWORKS[0].endpoints);
     NeuronData = await realNeuron(apiCtx);
-    setInterval(async () => {
+    myInterval = setInterval(async () => {
       NeuronData = await realNeuron(apiCtx);
     }, 120000);
   } catch (err) {
-    console.log('error', err);
+    clearInterval(myInterval);
+    getNeurons();
   }
 };
 getNeurons();
