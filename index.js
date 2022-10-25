@@ -38,7 +38,7 @@ const { token } = require('./config');
 
 //integrate polkadot for bittensor substrate
 const { realNeuron } = require('./polkadot/neuron');
-// let NeuronData = 'No Data';
+let NeuronData = 'No Data';
 
 const { NETWORKS } = require('./config/network');
 
@@ -145,7 +145,7 @@ client.on('messageCreate', async (msg) => {
           if (NeuronData?.[Number(uid)]?.stake) {
             // msg.channel.send(`UID:${uid} has`);
             msg.channel.send(
-              `Uid: ${uid}\n  hotkey: ${
+              `Uid: ${uid}\n}\n  hotkey: ${
                 NeuronData[Number(uid)].hotkey
               }\n  coldkey : ${NeuronData[Number(uid)].coldkey}\n  stake: ${
                 NeuronData[Number(uid)].stake / 1000000000
