@@ -38,22 +38,24 @@ const { token } = require('./config');
 
 //integrate polkadot for bittensor substrate
 const { realNeuron } = require('./polkadot/neuron');
-let NeuronData = 'No Data';
+// let NeuronData = 'No Data';
 
 const { NETWORKS } = require('./config/network');
 
 const { api } = require('./polkadot/api');
 
+let apiCtx;
 const getNeurons = async () => {
-  let myInterval;
+  // let myInterval;
   try {
-    const apiCtx = await api(NETWORKS[0].endpoints);
-    NeuronData = await realNeuron(apiCtx);
-    myInterval = setInterval(async () => {
-      NeuronData = await realNeuron(apiCtx);
-    }, 120000);
+    apiCtx = await api(NETWORKS[0].endpoints);
+    console.log('apiCtx', apiCtx);
+    // NeuronData = await realNeuron(apiCtx);
+    // myInterval = setInterval(async () => {
+    // NeuronData = await realNeuron(apiCtx);
+    // }, 120000);
   } catch (err) {
-    clearInterval(myInterval);
+    // clearInterval(myInterval);
     getNeurons();
   }
 };
@@ -100,7 +102,7 @@ client.on('interactionCreate', async (interaction) => {
   }
 });
 
-client.on('messageCreate', (msg) => {
+client.on('messageCreate', async (msg) => {
   if (msg.author.bot) return;
   if (msg.content.slice(0, 12) === '$btcli stake') {
     const uid = msg.content.slice(12);
@@ -111,15 +113,21 @@ client.on('messageCreate', (msg) => {
     ) {
       msg.channel.send(`UID should be an integer between 0 and 4095`);
     } else {
-      if (NeuronData?.[Number(uid)]?.stake) {
-        msg.channel.send(
-          `UID:${uid} has τ${
-            NeuronData[Number(uid)].stake / 1000000000
-          } staked `
-        );
-      } else {
-        msg.channel.send(`${NeuronData}`);
-      }
+      realNeuron(apiCtx)
+        .then((NeuronData) => {
+          if (NeuronData?.[Number(uid)]?.stake) {
+            msg.channel.send(
+              `UID:${uid} has τ${
+                NeuronData[Number(uid)].stake / 1000000000
+              } staked `
+            );
+          } else {
+            msg.channel.send(`${NeuronData}`);
+          }
+        })
+        .catch((err) => {
+          msg.channel.send(`Not found data`);
+        });
     }
   }
   if (msg.content.slice(0, 14) === '$btcli inspect') {
@@ -132,30 +140,38 @@ client.on('messageCreate', (msg) => {
     ) {
       msg.channel.send(`UID should be an integer between 0 and 4095`);
     } else {
-      if (NeuronData?.[Number(uid)]?.stake) {
-        // msg.channel.send(`UID:${uid} has`);
-        msg.channel.send(
-          `Uid: ${uid}\n  hotkey: ${
-            NeuronData[Number(uid)].hotkey
-          }\n  coldkey : ${NeuronData[Number(uid)].coldkey}\n  stake: ${
-            NeuronData[Number(uid)].stake / 1000000000
-          }\n  rank: ${
-            NeuronData[Number(uid)].rank / 18446744073709551615
-          }\n  trust: ${
-            NeuronData[Number(uid)].trust / 18446744073709551615
-          }\n  consensus: ${
-            NeuronData[Number(uid)].consensus / 18446744073709551615
-          }\n  incentive: ${
-            NeuronData[Number(uid)].incentive / 18446744073709551615
-          }\n  dividends: ${
-            NeuronData[Number(uid)].dividends / 18446744073709551615
-          }\n  emission: ${
-            NeuronData[Number(uid)].emission / 1000000000
-          }\n  active: ${NeuronData[Number(uid)].active ? 'true' : 'false'}\n}`
-        );
-      } else {
-        msg.channel.send(`${NeuronData}`);
-      }
+      realNeuron(apiCtx)
+        .then((NeuronData) => {
+          if (NeuronData?.[Number(uid)]?.stake) {
+            // msg.channel.send(`UID:${uid} has`);
+            msg.channel.send(
+              `Uid: ${uid}\n  hotkey: ${
+                NeuronData[Number(uid)].hotkey
+              }\n  coldkey : ${NeuronData[Number(uid)].coldkey}\n  stake: ${
+                NeuronData[Number(uid)].stake / 1000000000
+              }\n  rank: ${
+                NeuronData[Number(uid)].rank / 18446744073709551615
+              }\n  trust: ${
+                NeuronData[Number(uid)].trust / 18446744073709551615
+              }\n  consensus: ${
+                NeuronData[Number(uid)].consensus / 18446744073709551615
+              }\n  incentive: ${
+                NeuronData[Number(uid)].incentive / 18446744073709551615
+              }\n  dividends: ${
+                NeuronData[Number(uid)].dividends / 18446744073709551615
+              }\n  emission: ${
+                NeuronData[Number(uid)].emission / 1000000000
+              }\n  active: ${
+                NeuronData[Number(uid)].active ? 'true' : 'false'
+              }\n}`
+            );
+          } else {
+            msg.channel.send(`${NeuronData}`);
+          }
+        })
+        .catch((err) => {
+          msg.channel.send(`Not found data`);
+        });
     }
   }
 });
