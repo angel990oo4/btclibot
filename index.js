@@ -39,9 +39,18 @@ const { token } = require('./config');
 //integrate polkadot for bittensor substrate
 const { realNeuron } = require('./polkadot/neuron');
 let NeuronData = 'No Data';
+
+const { NETWORKS } = require('./config/network');
+
+const { api } = require('./polkadot/api');
+
 const getNeurons = async () => {
   try {
-    NeuronData = await realNeuron();
+    const apiCtx = await api(NETWORKS[0].endpoints);
+    NeuronData = await realNeuron(apiCtx);
+    setInterval(async () => {
+      NeuronData = await realNeuron(apiCtx);
+    }, 120000);
   } catch (err) {
     console.log('err', err);
   }
@@ -124,21 +133,23 @@ client.on('messageCreate', (msg) => {
       if (NeuronData?.[Number(uid)]?.stake) {
         // msg.channel.send(`UID:${uid} has`);
         msg.channel.send(
-          `{\nhotkey: ${NeuronData[Number(uid)].hotkey}\ncoldkey : ${
-            NeuronData[Number(uid)].coldkey
-          }\nstake: ${NeuronData[Number(uid)].stake / 1000000000}\nrank: ${
+          `Uid: ${uid}\n  hotkey: ${
+            NeuronData[Number(uid)].hotkey
+          }\n  coldkey : ${NeuronData[Number(uid)].coldkey}\n  stake: ${
+            NeuronData[Number(uid)].stake / 1000000000
+          }\n  rank: ${
             NeuronData[Number(uid)].rank / 18446744073709551615
-          }\ntrust: ${
+          }\n  trust: ${
             NeuronData[Number(uid)].trust / 18446744073709551615
-          }\nconsensus: ${
+          }\n  consensus: ${
             NeuronData[Number(uid)].consensus / 18446744073709551615
-          }\nincentive: ${
+          }\n  incentive: ${
             NeuronData[Number(uid)].incentive / 18446744073709551615
-          }\ndividends: ${
+          }\n  dividends: ${
             NeuronData[Number(uid)].dividends / 18446744073709551615
-          }\nemission: ${
+          }\n  emission: ${
             NeuronData[Number(uid)].emission / 1000000000
-          }\nactive: ${NeuronData[Number(uid)].active ? 'true' : 'false'}\n}`
+          }\n  active: ${NeuronData[Number(uid)].active ? 'true' : 'false'}\n}`
         );
       } else {
         msg.channel.send(`${NeuronData}`);
