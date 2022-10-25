@@ -5,11 +5,14 @@ module.exports = {
   async api(endpoints) {
     try {
       const backupProvider = new WsProvider(endpoints);
-      await backupProvider.connect();
-      const backupapi = await ApiPromise.create({
-        provider: backupProvider,
-      });
-      return backupapi;
+      const api = ApiPromise.create({ provider: backupProvider })
+        .then((api) => {
+          return api;
+        })
+        .catch((err) => {
+          return null;
+        });
+      return api;
     } catch (err) {
       return null;
     }
