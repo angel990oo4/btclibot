@@ -37,29 +37,29 @@ const { token } = require('./config');
 //   });
 
 //integrate polkadot for bittensor substrate
-const { realNeuron } = require('./polkadot/neuron');
-let NeuronData = 'No Data';
+// const { realNeuron } = require('./polkadot/neuron');
+// let NeuronData = 'No Data';
 
-const { NETWORKS } = require('./config/network');
+// const { NETWORKS } = require('./config/network');
 
-const { api } = require('./polkadot/api');
+// const { api } = require('./polkadot/api');
 
-let apiCtx;
-const getNeurons = async () => {
-  // let myInterval;
-  try {
-    apiCtx = await api(NETWORKS[0].endpoints);
-    console.log('apiCtx', apiCtx);
-    // NeuronData = await realNeuron(apiCtx);
-    // myInterval = setInterval(async () => {
-    // NeuronData = await realNeuron(apiCtx);
-    // }, 120000);
-  } catch (err) {
-    // clearInterval(myInterval);
-    getNeurons();
-  }
-};
-getNeurons();
+// let apiCtx;
+// const getNeurons = async () => {
+//   // let myInterval;
+//   try {
+//     apiCtx = await api(NETWORKS[0].endpoints);
+//     console.log('apiCtx', apiCtx);
+//     // NeuronData = await realNeuron(apiCtx);
+//     // myInterval = setInterval(async () => {
+//     // NeuronData = await realNeuron(apiCtx);
+//     // }, 120000);
+//   } catch (err) {
+//     // clearInterval(myInterval);
+//     getNeurons();
+//   }
+// };
+// getNeurons();
 
 const client = new Client({
   intents: [
@@ -111,22 +111,28 @@ client.on('messageCreate', async (msg) => {
       Number(uid) < 0 ||
       Number(uid) > 4095
     ) {
-      msg.channel.send(`UID should be an integer between 0 and 4095`);
+      msg.channel.send({
+        content: `UID should be an integer between 0 and 4095`,
+      });
     } else {
-      realNeuron(apiCtx)
-        .then((NeuronData) => {
-          if (NeuronData?.[Number(uid)]?.stake) {
+      const message = await msg.channel.send({ content: 'loading data...' });
+      requestData()
+        .then(async (NeuronData) => {
+          await message.delete();
+
+          if (NeuronData?.data?.neuron?.[Number(uid)]?.stake) {
             msg.channel.send(
               `UID:${uid} has τ${
-                NeuronData[Number(uid)].stake / 1000000000
+                NeuronData?.data?.neuron?.[Number(uid)].stake / 1000000000
               } staked `
             );
           } else {
-            msg.channel.send(`${NeuronData}`);
+            msg.channel.send({ content: `No data` });
           }
         })
-        .catch((err) => {
-          msg.channel.send(`Not found data`);
+        .catch(async (err) => {
+          await message.delete();
+          msg.channel.send({ content: `Not found data` });
         });
     }
   }
@@ -138,14 +144,21 @@ client.on('messageCreate', async (msg) => {
       Number(uid) < 0 ||
       Number(uid) > 4095
     ) {
-      msg.channel.send(`UID should be an integer between 0 and 4095`);
+      msg.channel.send({
+        content: `UID should be an integer between 0 and 4095`,
+      });
     } else {
-      realNeuron(apiCtx)
-        .then((NeuronData) => {
+      const message = await msg.channel.send({ content: 'loading data...' });
+
+      requestData()
+        .then(async (res) => {
+          await message.delete();
+
+          let NeuronData = res?.data?.neuron;
           if (NeuronData?.[Number(uid)]?.stake) {
             // msg.channel.send(`UID:${uid} has`);
-            msg.channel.send(
-              `Uid: ${uid}\n}\n  hotkey: ${
+            msg.channel.send({
+              content: `Uid: ${uid}\n{\n  hotkey: ${
                 NeuronData[Number(uid)].hotkey
               }\n  coldkey : ${NeuronData[Number(uid)].coldkey}\n  stake: ${
                 NeuronData[Number(uid)].stake / 1000000000
@@ -163,14 +176,16 @@ client.on('messageCreate', async (msg) => {
                 NeuronData[Number(uid)].emission / 1000000000
               }\n  active: ${
                 NeuronData[Number(uid)].active ? 'true' : 'false'
-              }\n}`
-            );
+              }\n}`,
+            });
           } else {
-            msg.channel.send(`${NeuronData}`);
+            await message.delete();
+            msg.channel.send({ content: `No data` });
           }
         })
-        .catch((err) => {
-          msg.channel.send(`Not found data`);
+        .catch(async (err) => {
+          await message.delete();
+          msg.channel.send({ content: `Not found data` });
         });
     }
   }
