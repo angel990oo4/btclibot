@@ -89,36 +89,6 @@ for (const file of commandFiles) {
   client.commands.set(command.data.name, command);
 }
 
-// const generateCanva = async (labels, datas) => {
-//   const renderer = new ChartJSNodeCanvas({
-//     width: 1600,
-//     height: 800,
-//     backgroundColour: 'white',
-//   });
-//   const image = await renderer.renderToBuffer({
-//     // Build your graph passing option you want
-//     type: 'line',
-//     data: {
-//       labels: ['January', 'February', 'March', 'April', 'May'],
-//       datasets: [
-//         {
-//           label: 'Dogs',
-//           data: [50, 60, 70, 180, 190],
-//           fill: false,
-//           borderColor: 'blue',
-//         },
-//         // {
-//         //   label: 'Cats',
-//         //   data: [100, 200, 300, 400, 500],
-//         //   fill: false,
-//         //   borderColor: 'green',
-//         // },
-//       ],
-//     },
-//   });
-//   return new AttachmentBuilder(image, 'graph.png');
-// };
-
 client.once('ready', () => {
   console.log('Ready!');
 });

@@ -14,12 +14,35 @@ module.exports = {
         labels: labels,
         datasets: [
           {
-            label: 'Dogs',
+            label: 'Emission',
             data: data,
-            fill: false,
-            borderColor: 'blue',
+            fill: true,
           },
         ],
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            position: 'top',
+          },
+          title: {
+            display: true,
+            text: 'Emission value',
+          },
+        },
+        scales: {
+          y: {
+            type: 'linear',
+            display: true,
+            grid: {
+              drawOnChartArea: true, // only want the grid lines for one axis to show up
+            },
+          },
+          x: {
+            display: false,
+          },
+        },
       },
     });
     return new AttachmentBuilder(image, 'graph.png');
