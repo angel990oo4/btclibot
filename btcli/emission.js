@@ -1,7 +1,7 @@
 const { ChartJSNodeCanvas } = require('chartjs-node-canvas');
 const { AttachmentBuilder } = require('discord.js');
 module.exports = {
-  async generateCanva(labels, data) {
+  async generateCanva(labels, data, title) {
     const renderer = new ChartJSNodeCanvas({
       width: 1600,
       height: 800,
@@ -14,7 +14,7 @@ module.exports = {
         labels: labels,
         datasets: [
           {
-            label: 'Emission',
+            label: title,
             data: data,
             fill: true,
           },
@@ -24,21 +24,14 @@ module.exports = {
         responsive: true,
         plugins: {
           legend: {
-            position: 'top',
+            position: 'bottom',
           },
           title: {
-            display: true,
-            text: 'Emission value',
+            display: false,
+            text: title,
           },
         },
         scales: {
-          y: {
-            type: 'linear',
-            display: true,
-            grid: {
-              drawOnChartArea: true, // only want the grid lines for one axis to show up
-            },
-          },
           x: {
             display: false,
           },

@@ -196,21 +196,68 @@ client.on('messageCreate', async (msg) => {
     }
   }
   if (msg.content.slice(0, 15) === '$btcli emission') {
-    let labels = ['January', 'February', 'March', 'April', 'May'];
-    let data = [50, 60, 70, 180, 190];
-
-    const attachment = await generateCanva(labels, data);
-    console.log('attachment', attachment);
-    chartEmbed = {
-      title: 'MessageEmbed title',
-      image: {
-        url: 'attachment://graph.png',
-      },
-    };
-    msg.channel.send({
-      content: 'Emission value',
-      files: [attachment],
-    });
+    const message = await msg.channel.send({ content: 'loading data...' });
+    requestData()
+      .then(async (res) => {
+        await message.delete();
+        let NeuronData = res?.data?.neuron;
+        let labels = Array.from(new Array(4096), (x, i) => i);
+        let data = NeuronData.map(
+          (neuron, index) => neuron.emission / 1000000000
+        );
+        const attachment = await generateCanva(
+          labels,
+          data,
+          (title = 'Emission')
+        );
+        chartEmbed = {
+          title: 'MessageEmbed title',
+          image: {
+            url: 'attachment://graph.png',
+          },
+        };
+        msg.channel.send({
+          content: 'Emission value',
+          files: [attachment],
+        });
+      })
+      .catch((err) => {
+        msg.channel.send({
+          content: `${err}`,
+        });
+      });
+  }
+  if (msg.content.slice(0, 16) === '$btcli incentive') {
+    const message = await msg.channel.send({ content: 'loading data...' });
+    requestData()
+      .then(async (res) => {
+        await message.delete();
+        let NeuronData = res?.data?.neuron;
+        let labels = Array.from(new Array(4096), (x, i) => i);
+        let data = NeuronData.map(
+          (neuron, index) => neuron.incentive / 18446744073709551615
+        );
+        const attachment = await generateCanva(
+          labels,
+          data,
+          (title = 'Incentive')
+        );
+        chartEmbed = {
+          title: 'MessageEmbed title',
+          image: {
+            url: 'attachment://graph.png',
+          },
+        };
+        msg.channel.send({
+          content: 'Incentive value',
+          files: [attachment],
+        });
+      })
+      .catch((err) => {
+        msg.channel.send({
+          content: `${err}`,
+        });
+      });
   }
 });
 
