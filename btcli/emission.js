@@ -7,6 +7,7 @@ module.exports = {
       height: 800,
       backgroundColour: 'white',
     });
+    const maxVaue = Math.max(...data);
     const image = await renderer.renderToBuffer({
       // Build your graph passing option you want
       type: 'line',
@@ -14,7 +15,7 @@ module.exports = {
         labels: labels,
         datasets: [
           {
-            label: title,
+            label: `Max value is ${maxVaue}`,
             data: data,
             fill: true,
           },
@@ -27,7 +28,7 @@ module.exports = {
             position: 'bottom',
           },
           title: {
-            display: false,
+            display: true,
             text: title,
           },
         },
