@@ -31,6 +31,8 @@
     "axios": "^0.27.2",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
+    "chart.js": "^3.9.1",
+    "chartjs-node-canvas": "^4.1.6",
     "cors": "^2.8.5",
     "discord.js": "^14.3.0",
     "dotenv": "^16.0.3",
@@ -39,6 +41,7 @@
     "mongoose": "^6.0.7",
     "nodemailer": "^6.6.5",
     "nodemon": "^2.0.13",
-    "nylas": "^5.9.0"
+    "nylas": "^5.9.0",
+    "quickchart-js": "^3.1.0"
   }
 }

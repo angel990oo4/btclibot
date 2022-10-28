@@ -3,6 +3,9 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const axios = require('axios');
 const { requestData } = require('./utils/data');
+const { ChartJSNodeCanvas } = require('chartjs-node-canvas');
+const { Chart } = require('chart.js');
+const { generateCanva } = require('./btcli/emission');
 
 const app = express();
 var corsOptions = {
@@ -23,6 +26,10 @@ const {
   Collection,
   GatewayIntentBits,
   InteractionType,
+  EmbedBuilder,
+  MessageEmbed,
+  MessageAttachment,
+  AttachmentBuilder,
 } = require('discord.js');
 const { token } = require('./config');
 
@@ -82,7 +89,36 @@ for (const file of commandFiles) {
   client.commands.set(command.data.name, command);
 }
 
-// When the client is ready, run this code (only once)
+// const generateCanva = async (labels, datas) => {
+//   const renderer = new ChartJSNodeCanvas({
+//     width: 1600,
+//     height: 800,
+//     backgroundColour: 'white',
+//   });
+//   const image = await renderer.renderToBuffer({
+//     // Build your graph passing option you want
+//     type: 'line',
+//     data: {
+//       labels: ['January', 'February', 'March', 'April', 'May'],
+//       datasets: [
+//         {
+//           label: 'Dogs',
+//           data: [50, 60, 70, 180, 190],
+//           fill: false,
+//           borderColor: 'blue',
+//         },
+//         // {
+//         //   label: 'Cats',
+//         //   data: [100, 200, 300, 400, 500],
+//         //   fill: false,
+//         //   borderColor: 'green',
+//         // },
+//       ],
+//     },
+//   });
+//   return new AttachmentBuilder(image, 'graph.png');
+// };
+
 client.once('ready', () => {
   console.log('Ready!');
 });
@@ -188,6 +224,23 @@ client.on('messageCreate', async (msg) => {
           msg.channel.send({ content: `Not found data` });
         });
     }
+  }
+  if (msg.content.slice(0, 15) === '$btcli emission') {
+    let labels = ['January', 'February', 'March', 'April', 'May'];
+    let data = [50, 60, 70, 180, 190];
+
+    const attachment = await generateCanva(labels, data);
+    console.log('attachment', attachment);
+    chartEmbed = {
+      title: 'MessageEmbed title',
+      image: {
+        url: 'attachment://graph.png',
+      },
+    };
+    msg.channel.send({
+      content: 'Emission value',
+      files: [attachment],
+    });
   }
 });
 
