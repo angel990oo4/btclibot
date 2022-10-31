@@ -296,9 +296,7 @@ client.on('messageCreate', async (msg) => {
         await message.delete();
         let NeuronData = res?.data?.neuron;
         const csvContent = NeuronData.map((neuron, index) =>
-          [`${neuron.uid}`, `${neuron.emission / 18446744073709551615}`].join(
-            ','
-          )
+          [`${neuron.uid}`, `${neuron.emission / 1000000000}`].join(',')
         ).join('\n');
         const buffer = Buffer.from(csvContent, 'utf-8');
         const file = new AttachmentBuilder(buffer, {
