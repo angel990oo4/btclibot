@@ -195,7 +195,7 @@ client.on('messageCreate', async (msg) => {
         });
     }
   }
-  if (msg.content.slice(0, 15) === '$btcli emission') {
+  if (msg.content === '$btcli emission') {
     const message = await msg.channel.send({ content: 'loading data...' });
     requestData()
       .then(async (res) => {
@@ -207,7 +207,9 @@ client.on('messageCreate', async (msg) => {
         );
         const attachment = await generateCanva(
           labels,
-          data,
+          data.sort(function (a, b) {
+            return a - b;
+          }),
           (title = 'Emission')
         );
         chartEmbed = {
@@ -227,7 +229,7 @@ client.on('messageCreate', async (msg) => {
         });
       });
   }
-  if (msg.content.slice(0, 16) === '$btcli incentive') {
+  if (msg.content === '$btcli incentive') {
     const message = await msg.channel.send({ content: 'loading data...' });
     requestData()
       .then(async (res) => {
@@ -239,7 +241,9 @@ client.on('messageCreate', async (msg) => {
         );
         const attachment = await generateCanva(
           labels,
-          data,
+          data.sort(function (a, b) {
+            return a - b;
+          }),
           (title = 'Incentive')
         );
         chartEmbed = {

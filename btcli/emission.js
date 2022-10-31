@@ -5,7 +5,7 @@ module.exports = {
     const renderer = new ChartJSNodeCanvas({
       width: 1600,
       height: 800,
-      backgroundColour: 'white',
+      backgroundColour: 'rgba(255,255,255)',
     });
     const maxVaue = Math.max(...data);
     const image = await renderer.renderToBuffer({
@@ -13,11 +13,13 @@ module.exports = {
       type: 'line',
       data: {
         labels: labels,
+        color: '#809dab',
         datasets: [
           {
             label: `Max value is ${maxVaue}`,
             data: data,
             fill: true,
+            // borderColor: 'rgba(0, 0, 0, 0.8)',
           },
         ],
       },
@@ -30,6 +32,7 @@ module.exports = {
           title: {
             display: true,
             text: title,
+            color: 'white',
           },
         },
         scales: {
