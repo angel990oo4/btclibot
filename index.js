@@ -275,7 +275,9 @@ client.on('messageCreate', async (msg) => {
           )
         ).join('\n');
         const buffer = Buffer.from(csvContent, 'utf-8');
-        const file = new AttachmentBuilder(buffer, { name: 'incentive.csv' });
+        const file = new AttachmentBuilder(buffer, {
+          name: 'uid_incentive.csv',
+        });
         msg.channel.send({
           content: 'Incentive raw value',
           files: [file],
@@ -299,7 +301,9 @@ client.on('messageCreate', async (msg) => {
           )
         ).join('\n');
         const buffer = Buffer.from(csvContent, 'utf-8');
-        const file = new AttachmentBuilder(buffer, { name: 'emission.csv' });
+        const file = new AttachmentBuilder(buffer, {
+          name: 'uid_emission.csv',
+        });
         msg.channel.send({
           content: 'Emission raw value',
           files: [file],
