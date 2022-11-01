@@ -111,9 +111,10 @@ client.on('interactionCreate', async (interaction) => {
 
 client.on('messageCreate', async (msg) => {
   if (msg.author.bot) return;
-  if (msg.content.slice(0, 6) === '$btcli') {
-    if (msg.content.slice(0, 12) === '$btcli stake') {
-      const uid = msg.content.slice(12);
+  const discordMessage = msg.content.replace(/\s+/g, ' ');
+  if (discordMessage.slice(0, 6) === '$btcli') {
+    if (discordMessage.slice(0, 12) === '$btcli stake') {
+      const uid = discordMessage.slice(12);
       if (
         !Number.isInteger(Number(uid)) ||
         Number(uid) < 0 ||
@@ -143,8 +144,8 @@ client.on('messageCreate', async (msg) => {
             msg.channel.send({ content: `Not found data` });
           });
       }
-    } else if (msg.content.slice(0, 14) === '$btcli inspect') {
-      const uid = msg.content.slice(14);
+    } else if (discordMessage.slice(0, 14) === '$btcli inspect') {
+      const uid = discordMessage.slice(14);
       if (
         !Number.isInteger(Number(uid)) ||
         Number(uid) < 0 ||
@@ -195,7 +196,7 @@ client.on('messageCreate', async (msg) => {
           });
       }
     } else {
-      switch (msg.content) {
+      switch (discordMessage) {
         case '$btcli emission': {
           const message = await msg.channel.send({
             content: 'loading data...',
@@ -409,7 +410,7 @@ client.on('messageCreate', async (msg) => {
         }
         default:
           msg.channel.send({
-            content: `**$btcli: ${msg.content.slice(
+            content: `**$btcli: ${discordMessage.slice(
               6
             )}** is not a btcli command. See **$btcli --help**.`,
           });
