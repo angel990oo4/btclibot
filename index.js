@@ -143,10 +143,8 @@ client.on('messageCreate', async (msg) => {
             msg.channel.send({ content: `Not found data` });
           });
       }
-    }
-    if (msg.content.slice(0, 14) === '$btcli inspect') {
+    } else if (msg.content.slice(0, 14) === '$btcli inspect') {
       const uid = msg.content.slice(14);
-      console.log('btcli inspect', uid);
       if (
         !Number.isInteger(Number(uid)) ||
         Number(uid) < 0 ||
@@ -196,200 +194,227 @@ client.on('messageCreate', async (msg) => {
             msg.channel.send({ content: `Not found data` });
           });
       }
-    }
-    if (msg.content === '$btcli emission') {
-      const message = await msg.channel.send({ content: 'loading data...' });
-      requestData()
-        .then(async (res) => {
-          await message.delete();
-          let NeuronData = res?.data?.neuron;
-          let labels = Array.from(new Array(4096), (x, i) => i);
-          let data = NeuronData.map(
-            (neuron, index) => neuron.emission / 1000000000
-          );
-          const attachment = await generateCanva(
-            labels,
-            data.sort(function (a, b) {
-              return a - b;
-            }),
-            (title = 'Emission')
-          );
-          chartEmbed = {
-            title: 'MessageEmbed title',
-            image: {
-              url: 'attachment://graph.png',
-            },
-          };
-          msg.channel.send({
-            content: 'Emission value',
-            files: [attachment],
-          });
-        })
-        .catch((err) => {
-          msg.channel.send({
-            content: `${err}`,
-          });
-        });
-    }
-    if (msg.content === '$btcli incentive') {
-      const message = await msg.channel.send({ content: 'loading data...' });
-      requestData()
-        .then(async (res) => {
-          await message.delete();
-          let NeuronData = res?.data?.neuron;
-          let labels = Array.from(new Array(4096), (x, i) => i);
-          let data = NeuronData.map(
-            (neuron, index) => neuron.incentive / 18446744073709551615
-          );
-          const attachment = await generateCanva(
-            labels,
-            data.sort(function (a, b) {
-              return a - b;
-            }),
-            (title = 'Incentive')
-          );
-          chartEmbed = {
-            title: 'MessageEmbed title',
-            image: {
-              url: 'attachment://graph.png',
-            },
-          };
-          msg.channel.send({
-            content: 'Incentive value',
-            files: [attachment],
-          });
-        })
-        .catch((err) => {
-          msg.channel.send({
-            content: `${err}`,
-          });
-        });
-    }
-    if (msg.content === '$btcli incentive --raw') {
-      const message = await msg.channel.send({ content: 'loading data...' });
-      requestData()
-        .then(async (res) => {
-          await message.delete();
-          let NeuronData = res?.data?.neuron;
-          const csvContent = NeuronData.map((neuron, index) =>
-            [
-              `${neuron.uid}`,
-              `${neuron.incentive / 18446744073709551615}`,
-            ].join(',')
-          ).join('\n');
-          const buffer = Buffer.from(csvContent, 'utf-8');
-          const file = new AttachmentBuilder(buffer, {
-            name: 'uid_incentive.csv',
-          });
-          msg.channel.send({
-            content: 'Incentive raw value',
-            files: [file],
-          });
-        })
-        .catch((err) => {
-          msg.channel.send({
-            content: `${err}`,
-          });
-        });
-    }
-    if (msg.content === '$btcli incentive --raw --ascending') {
-      const message = await msg.channel.send({ content: 'loading data...' });
-      requestData()
-        .then(async (res) => {
-          await message.delete();
-          let NeuronData = res?.data?.neuron;
-          const csvContent = NeuronData.sort(function (a, b) {
-            return a.incentive - b.incentive;
-          })
-            .map((neuron, index) =>
-              [
-                `${neuron.uid}`,
-                `${neuron.incentive / 18446744073709551615}`,
-              ].join(',')
-            )
-            .join('\n');
-          const buffer = Buffer.from(csvContent, 'utf-8');
-          const file = new AttachmentBuilder(buffer, {
-            name: 'uid_incentive_ascending.csv',
-          });
-          msg.channel.send({
-            content: 'Incentive raw value',
-            files: [file],
-          });
-        })
-        .catch((err) => {
-          msg.channel.send({
-            content: `${err}`,
-          });
-        });
-    }
-
-    if (msg.content === '$btcli incentive --raw --descending ') {
-      const message = await msg.channel.send({ content: 'loading data...' });
-      requestData()
-        .then(async (res) => {
-          await message.delete();
-          let NeuronData = res?.data?.neuron;
-          const csvContent = NeuronData.sort(function (a, b) {
-            return b.incentive - a.incentive;
-          })
-            .map((neuron, index) =>
-              [
-                `${neuron.uid}`,
-                `${neuron.incentive / 18446744073709551615}`,
-              ].join(',')
-            )
-            .join('\n');
-          const buffer = Buffer.from(csvContent, 'utf-8');
-          const file = new AttachmentBuilder(buffer, {
-            name: 'uid_incentive_descending.csv',
-          });
-          msg.channel.send({
-            content: 'Incentive raw value',
-            files: [file],
-          });
-        })
-        .catch((err) => {
-          msg.channel.send({
-            content: `${err}`,
-          });
-        });
-    }
-
-    if (msg.content === '$btcli emission --raw') {
-      const message = await msg.channel.send({ content: 'loading data...' });
-      requestData()
-        .then(async (res) => {
-          await message.delete();
-          let NeuronData = res?.data?.neuron;
-          const csvContent = NeuronData.map((neuron, index) =>
-            [`${neuron.uid}`, `${neuron.emission / 1000000000}`].join(',')
-          ).join('\n');
-          const buffer = Buffer.from(csvContent, 'utf-8');
-          const file = new AttachmentBuilder(buffer, {
-            name: 'uid_emission.csv',
-          });
-          msg.channel.send({
-            content: 'Emission raw value',
-            files: [file],
-          });
-        })
-        .catch((err) => {
-          msg.channel.send({
-            content: `${err}`,
-          });
-        });
-    }
-    if (msg.content === '$btcli' || msg.content === '$btcli --help') {
-      msg.channel.send({
-        content: `${BtcliCommands}`,
-      });
     } else {
-      msg.channel.send({
-        content: `$btcli: '${msg.content.slice(
-          6
-        )}' is not a btcli command. See '$btcli --help'.`,
-      });
+      switch (msg.content) {
+        case '$btcli emission': {
+          const message = await msg.channel.send({
+            content: 'loading data...',
+          });
+          requestData()
+            .then(async (res) => {
+              await message.delete();
+              let NeuronData = res?.data?.neuron;
+              let labels = Array.from(new Array(4096), (x, i) => i);
+              let data = NeuronData.map(
+                (neuron, index) => neuron.emission / 1000000000
+              );
+              const attachment = await generateCanva(
+                labels,
+                data.sort(function (a, b) {
+                  return a - b;
+                }),
+                (title = 'Emission')
+              );
+              chartEmbed = {
+                title: 'MessageEmbed title',
+                image: {
+                  url: 'attachment://graph.png',
+                },
+              };
+              msg.channel.send({
+                content: 'Emission value',
+                files: [attachment],
+              });
+            })
+            .catch((err) => {
+              msg.channel.send({
+                content: `${err}`,
+              });
+            });
+          break;
+        }
+        case '$btcli incentive': {
+          const message = await msg.channel.send({
+            content: 'loading data...',
+          });
+          requestData()
+            .then(async (res) => {
+              await message.delete();
+              let NeuronData = res?.data?.neuron;
+              let labels = Array.from(new Array(4096), (x, i) => i);
+              let data = NeuronData.map(
+                (neuron, index) => neuron.incentive / 18446744073709551615
+              );
+              const attachment = await generateCanva(
+                labels,
+                data.sort(function (a, b) {
+                  return a - b;
+                }),
+                (title = 'Incentive')
+              );
+              chartEmbed = {
+                title: 'MessageEmbed title',
+                image: {
+                  url: 'attachment://graph.png',
+                },
+              };
+              msg.channel.send({
+                content: 'Incentive value',
+                files: [attachment],
+              });
+            })
+            .catch((err) => {
+              msg.channel.send({
+                content: `${err}`,
+              });
+            });
+          break;
+        }
+        case '$btcli incentive --raw': {
+          const message = await msg.channel.send({
+            content: 'loading data...',
+          });
+          requestData()
+            .then(async (res) => {
+              await message.delete();
+              let NeuronData = res?.data?.neuron;
+              const csvContent = NeuronData.map((neuron, index) =>
+                [
+                  `${neuron.uid}`,
+                  `${neuron.incentive / 18446744073709551615}`,
+                ].join(',')
+              ).join('\n');
+              const buffer = Buffer.from(csvContent, 'utf-8');
+              const file = new AttachmentBuilder(buffer, {
+                name: 'uid_incentive.csv',
+              });
+              msg.channel.send({
+                content: 'Incentive raw value',
+                files: [file],
+              });
+            })
+            .catch((err) => {
+              msg.channel.send({
+                content: `${err}`,
+              });
+            });
+          break;
+        }
+        case '$btcli incentive --raw --ascending': {
+          const message = await msg.channel.send({
+            content: 'loading data...',
+          });
+          requestData()
+            .then(async (res) => {
+              await message.delete();
+              let NeuronData = res?.data?.neuron;
+              const csvContent = NeuronData.sort(function (a, b) {
+                return a.incentive - b.incentive;
+              })
+                .map((neuron, index) =>
+                  [
+                    `${neuron.uid}`,
+                    `${neuron.incentive / 18446744073709551615}`,
+                  ].join(',')
+                )
+                .join('\n');
+              const buffer = Buffer.from(csvContent, 'utf-8');
+              const file = new AttachmentBuilder(buffer, {
+                name: 'uid_incentive_ascending.csv',
+              });
+              msg.channel.send({
+                content: 'Incentive raw value',
+                files: [file],
+              });
+            })
+            .catch((err) => {
+              msg.channel.send({
+                content: `${err}`,
+              });
+            });
+          break;
+        }
+        case '$btcli incentive --raw --descending': {
+          const message = await msg.channel.send({
+            content: 'loading data...',
+          });
+          requestData()
+            .then(async (res) => {
+              await message.delete();
+              let NeuronData = res?.data?.neuron;
+              const csvContent = NeuronData.sort(function (a, b) {
+                return b.incentive - a.incentive;
+              })
+                .map((neuron, index) =>
+                  [
+                    `${neuron.uid}`,
+                    `${neuron.incentive / 18446744073709551615}`,
+                  ].join(',')
+                )
+                .join('\n');
+              const buffer = Buffer.from(csvContent, 'utf-8');
+              const file = new AttachmentBuilder(buffer, {
+                name: 'uid_incentive_descending.csv',
+              });
+              msg.channel.send({
+                content: 'Incentive raw value',
+                files: [file],
+              });
+            })
+            .catch((err) => {
+              msg.channel.send({
+                content: `${err}`,
+              });
+            });
+          break;
+        }
+        case '$btcli emission --raw': {
+          const message = await msg.channel.send({
+            content: 'loading data...',
+          });
+          requestData()
+            .then(async (res) => {
+              await message.delete();
+              let NeuronData = res?.data?.neuron;
+              const csvContent = NeuronData.map((neuron, index) =>
+                [`${neuron.uid}`, `${neuron.emission / 1000000000}`].join(',')
+              ).join('\n');
+              const buffer = Buffer.from(csvContent, 'utf-8');
+              const file = new AttachmentBuilder(buffer, {
+                name: 'uid_emission.csv',
+              });
+              msg.channel.send({
+                content: 'Emission raw value',
+                files: [file],
+              });
+            })
+            .catch((err) => {
+              msg.channel.send({
+                content: `${err}`,
+              });
+            });
+          break;
+        }
+        case '$btcli': {
+          msg.channel.send({
+            content: `${BtcliCommands}`,
+          });
+          break;
+        }
+        case '$btcli --help': {
+          msg.channel.send({
+            content: `${BtcliCommands}`,
+          });
+          break;
+        }
+        default:
+          msg.channel.send({
+            content: `**$btcli: ${msg.content.slice(
+              6
+            )}** is not a btcli command. See **$btcli --help**.`,
+          });
+          break;
+      }
     }
   } else return;
 });
