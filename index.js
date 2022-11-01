@@ -5,7 +5,7 @@ const axios = require('axios');
 const { requestData } = require('./utils/data');
 const { ChartJSNodeCanvas } = require('chartjs-node-canvas');
 const { Chart } = require('chart.js');
-const { generateCanva } = require('./btcli/emission');
+const { generateCanva } = require('./btcli/chartNeuron');
 
 const app = express();
 var corsOptions = {
