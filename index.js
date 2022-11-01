@@ -6,6 +6,7 @@ const { requestData } = require('./utils/data');
 const { ChartJSNodeCanvas } = require('chartjs-node-canvas');
 const { Chart } = require('chart.js');
 const { generateCanva } = require('./btcli/chartNeuron');
+const { BtcliCommands } = require('./const/btclicommands');
 
 const app = express();
 var corsOptions = {
@@ -378,6 +379,11 @@ client.on('messageCreate', async (msg) => {
             content: `${err}`,
           });
         });
+    }
+    if (msg.content === '$btcli' || msg.content === '$btcli --help') {
+      msg.channel.send({
+        content: `${BtcliCommands}`,
+      });
     } else {
       msg.channel.send({
         content: `$btcli: '${msg.content.slice(
