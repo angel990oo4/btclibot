@@ -7,6 +7,7 @@ const { incentiveExecute, incentiveExecuteRaw } = require('./btcli/incentive');
 const { matagraphExecuteRaw } = require('./btcli/metagraph');
 const { stakeExecute } = require('./btcli/stake');
 const { helpExecute } = require('./btcli/help');
+const { factorExecute, factorExecuteRaw } = require('./btcli/factor');
 const app = express();
 var corsOptions = {
   origin: '*',
@@ -98,19 +99,19 @@ client.on('messageCreate', async (msg) => {
           break;
         }
         case '$btcli incentive': {
-          incentiveExecute(msg);
+          factorExecute(msg, (factor = 'incentive'));
           break;
         }
         case '$btcli incentive --raw': {
-          incentiveExecuteRaw(msg, 'raw');
+          factorExecuteRaw(msg, 'raw', (factor = 'incentive'));
           break;
         }
         case '$btcli incentive --raw --ascending': {
-          incentiveExecuteRaw(msg, 'ascending');
+          factorExecuteRaw(msg, 'ascending', (factor = 'incentive'));
           break;
         }
         case '$btcli incentive --raw --descending': {
-          incentiveExecuteRaw(msg, 'descending');
+          factorExecuteRaw(msg, 'descending', (factor = 'incentive'));
           break;
         }
         case '$btcli emission': {

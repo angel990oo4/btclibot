@@ -4,7 +4,7 @@ const { AttachmentBuilder } = require('discord.js');
 
 module.exports = {
   async factorExecute(msg, factor) {
-    const title = factor.toUpperCase();
+    let title = factor.toUpperCase();
     const message = await msg.channel.send({
       content: 'loading data...',
     });
@@ -44,7 +44,7 @@ module.exports = {
   },
 
   async factorExecuteRaw(msg, order, factor) {
-    const title = factor.toUpperCase();
+    let title = factor.toUpperCase();
     const message = await msg.channel.send({
       content: 'loading data...',
     });
