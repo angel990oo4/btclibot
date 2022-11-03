@@ -33,7 +33,7 @@ module.exports = {
           title: {
             display: true,
             text: title,
-            color: 'white',
+            color: 'black',
           },
         },
         scales: {
