@@ -309,7 +309,7 @@ client.on('messageCreate', async (msg) => {
             .then(async (res) => {
               await message.delete();
               let NeuronData = res?.data?.neuron;
-              const csvContent = NeuronData.map((neuron, index) =>
+              let csvContent = NeuronData.map((neuron, index) =>
                 [
                   `${neuron.uid}`,
                   `${neuron.hotkey}`,
@@ -322,8 +322,13 @@ client.on('messageCreate', async (msg) => {
                   `${neuron.dividends / 18446744073709551615}`,
                   `${neuron.emission / 1000000000}`,
                   `${neuron.active}`,
-                ].join(',')
-              ).join('\n');
+                ].join(', ')
+              );
+              csvContent.unshift(
+                'UID, HotKey, ColdKey, Stake, Rank, Trust, Consensus, Incentive, Dividends, Emission, Active'
+              );
+              csvContent = csvContent.join('\n');
+
               const buffer = Buffer.from(csvContent, 'utf-8');
               const file = new AttachmentBuilder(buffer, {
                 name: 'metagraph.csv',
