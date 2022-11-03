@@ -54,7 +54,7 @@ module.exports = {
         let NeuronData = res?.data?.neuron;
         let csvContent;
         switch (order) {
-          case 'ascending':
+          case '--ascending':
             csvContent = NeuronData.sort(function (a, b) {
               return a[factor] - b[factor];
             })
@@ -72,7 +72,7 @@ module.exports = {
               })
               .join('\n');
             break;
-          case 'descending':
+          case '--descending':
             csvContent = NeuronData.sort(function (a, b) {
               return b[factor] - a[factor];
             })

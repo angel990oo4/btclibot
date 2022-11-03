@@ -2,12 +2,13 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const { inspectExecute } = require('./btcli/inspect');
-const { emissionExecute, emissionExecuteRaw } = require('./btcli/emission');
-const { incentiveExecute, incentiveExecuteRaw } = require('./btcli/incentive');
+// const { emissionExecute, emissionExecuteRaw } = require('./btcli/emission');
+// const { incentiveExecute, incentiveExecuteRaw } = require('./btcli/incentive');
 const { matagraphExecuteRaw } = require('./btcli/metagraph');
 const { stakeExecute } = require('./btcli/stake');
 const { helpExecute } = require('./btcli/help');
 const { factorExecute, factorExecuteRaw } = require('./btcli/factor');
+const { factors } = require('./const/btclicommands');
 const app = express();
 var corsOptions = {
   origin: '*',
@@ -77,6 +78,7 @@ client.on('interactionCreate', async (interaction) => {
 client.on('messageCreate', async (msg) => {
   if (msg.author.bot) return;
   const discordMessage = msg.content.replace(/\s+/g, ' ');
+  const messageArray = discordMessage.split(' ');
   if (discordMessage.slice(0, 6) === '$btcli' && discordMessage.length <= 50) {
     if (discordMessage.slice(0, 18) === '$btcli stake --uid') {
       const uid = discordMessage.slice(18);
@@ -84,6 +86,21 @@ client.on('messageCreate', async (msg) => {
     } else if (discordMessage.slice(0, 20) === '$btcli inspect --uid') {
       const uid = discordMessage.slice(20);
       inspectExecute(uid, msg);
+    } else if (messageArray.length === 2 && factors.includes(messageArray[1])) {
+      factorExecute(msg, messageArray[1]);
+    } else if (
+      messageArray.length === 3 &&
+      factors.includes(messageArray[1]) &&
+      messageArray[2] === '--raw'
+    ) {
+      factorExecuteRaw(msg, 'raw', messageArray[1]);
+    } else if (
+      messageArray.length === 4 &&
+      factors.includes(messageArray[1]) &&
+      messageArray[2] === '--raw' &&
+      ['--ascending', '--descending'].includes(messageArray[3])
+    ) {
+      factorExecuteRaw(msg, messageArray[3], messageArray[1]);
     } else {
       switch (discordMessage) {
         case '$btcli': {
@@ -98,30 +115,30 @@ client.on('messageCreate', async (msg) => {
           matagraphExecuteRaw(msg);
           break;
         }
-        case '$btcli incentive': {
-          factorExecute(msg, (factor = 'incentive'));
-          break;
-        }
-        case '$btcli incentive --raw': {
-          factorExecuteRaw(msg, 'raw', (factor = 'incentive'));
-          break;
-        }
-        case '$btcli incentive --raw --ascending': {
-          factorExecuteRaw(msg, 'ascending', (factor = 'incentive'));
-          break;
-        }
-        case '$btcli incentive --raw --descending': {
-          factorExecuteRaw(msg, 'descending', (factor = 'incentive'));
-          break;
-        }
-        case '$btcli emission': {
-          emissionExecute(msg);
-          break;
-        }
-        case '$btcli emission --raw': {
-          emissionExecuteRaw(msg);
-          break;
-        }
+        // case '$btcli incentive': {
+        //   factorExecute(msg, (factor = 'incentive'));
+        //   break;
+        // }
+        // case '$btcli incentive --raw': {
+        //   factorExecuteRaw(msg, 'raw', (factor = 'incentive'));
+        //   break;
+        // }
+        // case '$btcli incentive --raw --ascending': {
+        //   factorExecuteRaw(msg, 'ascending', (factor = 'incentive'));
+        //   break;
+        // }
+        // case '$btcli incentive --raw --descending': {
+        //   factorExecuteRaw(msg, 'descending', (factor = 'incentive'));
+        //   break;
+        // }
+        // case '$btcli emission': {
+        //   emissionExecute(msg);
+        //   break;
+        // }
+        // case '$btcli emission --raw': {
+        //   emissionExecuteRaw(msg);
+        //   break;
+        // }
         default:
           msg.channel.send({
             content: `**$btcli: ${discordMessage.slice(

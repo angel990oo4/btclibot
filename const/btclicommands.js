@@ -9,6 +9,16 @@ const BtcliCommands =
 ```Same commands for emission, rank, trust, consensus, dividends```\
 ';
 
+const factors = [
+  'stake',
+  'incentive',
+  'emission',
+  'rank',
+  'trust',
+  'consensus',
+  'dividends',
+];
 module.exports = {
   BtcliCommands,
+  factors,
 };
