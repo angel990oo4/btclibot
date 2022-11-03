@@ -7,7 +7,7 @@ const { ChartJSNodeCanvas } = require('chartjs-node-canvas');
 const { Chart } = require('chart.js');
 const { generateCanva } = require('./btcli/chartNeuron');
 const { BtcliCommands } = require('./const/btclicommands');
-const { emissionExecute } = require('./btcli/emission');
+const { emissionExecute, emissionExecuteRaw } = require('./btcli/emission');
 
 const app = express();
 var corsOptions = {
@@ -397,30 +397,7 @@ client.on('messageCreate', async (msg) => {
           break;
         }
         case '$btcli emission --raw': {
-          const message = await msg.channel.send({
-            content: 'loading data...',
-          });
-          requestData()
-            .then(async (res) => {
-              await message.delete();
-              let NeuronData = res?.data?.neuron;
-              const csvContent = NeuronData.map((neuron, index) =>
-                [`${neuron.uid}`, `${neuron.emission / 1000000000}`].join(',')
-              ).join('\n');
-              const buffer = Buffer.from(csvContent, 'utf-8');
-              const file = new AttachmentBuilder(buffer, {
-                name: 'uid_emission.csv',
-              });
-              msg.channel.send({
-                content: 'Emission raw value',
-                files: [file],
-              });
-            })
-            .catch((err) => {
-              msg.channel.send({
-                content: `${err}`,
-              });
-            });
+          emissionExecuteRaw(msg);
           break;
         }
         default:
