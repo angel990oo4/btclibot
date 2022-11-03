@@ -7,6 +7,7 @@ const { ChartJSNodeCanvas } = require('chartjs-node-canvas');
 const { Chart } = require('chart.js');
 const { generateCanva } = require('./btcli/chartNeuron');
 const { BtcliCommands } = require('./const/btclicommands');
+const { emissionExecute } = require('./btcli/emission');
 
 const app = express();
 var corsOptions = {
@@ -200,7 +201,19 @@ client.on('messageCreate', async (msg) => {
       }
     } else {
       switch (discordMessage) {
-        case '$btcli emission': {
+        case '$btcli': {
+          msg.channel.send({
+            content: `${BtcliCommands}`,
+          });
+          break;
+        }
+        case '$btcli --help': {
+          msg.channel.send({
+            content: `${BtcliCommands}`,
+          });
+          break;
+        }
+        case '$btcli metagraph --raw': {
           const message = await msg.channel.send({
             content: 'loading data...',
           });
@@ -208,26 +221,33 @@ client.on('messageCreate', async (msg) => {
             .then(async (res) => {
               await message.delete();
               let NeuronData = res?.data?.neuron;
-              let labels = Array.from(new Array(4096), (x, i) => i);
-              let data = NeuronData.map(
-                (neuron, index) => neuron.emission / 1000000000
+              let csvContent = NeuronData.map((neuron, index) =>
+                [
+                  `${neuron.uid}`,
+                  `${neuron.hotkey}`,
+                  `${neuron.coldkey}`,
+                  `${neuron.stake / 1000000000}`,
+                  `${neuron.rank / 18446744073709551615}`,
+                  `${neuron.trust / 18446744073709551615}`,
+                  `${neuron.consensus / 18446744073709551615}`,
+                  `${neuron.incentive / 18446744073709551615}`,
+                  `${neuron.dividends / 18446744073709551615}`,
+                  `${neuron.emission / 1000000000}`,
+                  `${neuron.active}`,
+                ].join(', ')
               );
-              const attachment = await generateCanva(
-                labels,
-                data.sort(function (a, b) {
-                  return a - b;
-                }),
-                (title = 'Emission')
+              csvContent.unshift(
+                'UID, HotKey, ColdKey, Stake, Rank, Trust, Consensus, Incentive, Dividends, Emission, Active'
               );
-              chartEmbed = {
-                title: 'MessageEmbed title',
-                image: {
-                  url: 'attachment://graph.png',
-                },
-              };
+              csvContent = csvContent.join('\n');
+
+              const buffer = Buffer.from(csvContent, 'utf-8');
+              const file = new AttachmentBuilder(buffer, {
+                name: 'metagraph.csv',
+              });
               msg.channel.send({
-                content: 'Emission value',
-                files: [attachment],
+                content: 'Metagraph raw value',
+                files: [file],
               });
             })
             .catch((err) => {
@@ -294,50 +314,6 @@ client.on('messageCreate', async (msg) => {
               });
               msg.channel.send({
                 content: 'Incentive raw value',
-                files: [file],
-              });
-            })
-            .catch((err) => {
-              msg.channel.send({
-                content: `${err}`,
-              });
-            });
-          break;
-        }
-        case '$btcli metagraph --raw': {
-          const message = await msg.channel.send({
-            content: 'loading data...',
-          });
-          requestData()
-            .then(async (res) => {
-              await message.delete();
-              let NeuronData = res?.data?.neuron;
-              let csvContent = NeuronData.map((neuron, index) =>
-                [
-                  `${neuron.uid}`,
-                  `${neuron.hotkey}`,
-                  `${neuron.coldkey}`,
-                  `${neuron.stake / 1000000000}`,
-                  `${neuron.rank / 18446744073709551615}`,
-                  `${neuron.trust / 18446744073709551615}`,
-                  `${neuron.consensus / 18446744073709551615}`,
-                  `${neuron.incentive / 18446744073709551615}`,
-                  `${neuron.dividends / 18446744073709551615}`,
-                  `${neuron.emission / 1000000000}`,
-                  `${neuron.active}`,
-                ].join(', ')
-              );
-              csvContent.unshift(
-                'UID, HotKey, ColdKey, Stake, Rank, Trust, Consensus, Incentive, Dividends, Emission, Active'
-              );
-              csvContent = csvContent.join('\n');
-
-              const buffer = Buffer.from(csvContent, 'utf-8');
-              const file = new AttachmentBuilder(buffer, {
-                name: 'metagraph.csv',
-              });
-              msg.channel.send({
-                content: 'Metagraph raw value',
                 files: [file],
               });
             })
@@ -416,6 +392,10 @@ client.on('messageCreate', async (msg) => {
             });
           break;
         }
+        case '$btcli emission': {
+          emissionExecute(msg);
+          break;
+        }
         case '$btcli emission --raw': {
           const message = await msg.channel.send({
             content: 'loading data...',
@@ -441,18 +421,6 @@ client.on('messageCreate', async (msg) => {
                 content: `${err}`,
               });
             });
-          break;
-        }
-        case '$btcli': {
-          msg.channel.send({
-            content: `${BtcliCommands}`,
-          });
-          break;
-        }
-        case '$btcli --help': {
-          msg.channel.send({
-            content: `${BtcliCommands}`,
-          });
           break;
         }
         default:
