@@ -116,11 +116,8 @@ client.on('interactionCreate', async (interaction) => {
 client.on('messageCreate', async (msg) => {
   if (msg.author.bot) return;
   const discordMessage = msg.content.replace(/\s+/g, ' ');
-  if (discordMessage.slice(0, 6) === '$btcli') {
-    if (
-      discordMessage.slice(0, 12) === '$btcli stake' &&
-      discordMessage.length <= 50
-    ) {
+  if (discordMessage.slice(0, 6) === '$btcli' && discordMessage.length <= 50) {
+    if (discordMessage.slice(0, 12) === '$btcli stake') {
       const uid = discordMessage.slice(12);
       if (
         !Number.isInteger(Number(uid)) ||
