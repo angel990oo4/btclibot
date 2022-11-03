@@ -11,6 +11,7 @@ const { inspectExecute } = require('./btcli/inspect');
 const { emissionExecute, emissionExecuteRaw } = require('./btcli/emission');
 const { incentiveExecute, incentiveExecuteRaw } = require('./btcli/incentive');
 const { matagraphExecuteRaw } = require('./btcli/metagraph');
+const { stakeExecute } = require('./btcli/stake');
 
 const app = express();
 var corsOptions = {
@@ -118,36 +119,7 @@ client.on('messageCreate', async (msg) => {
   const discordMessage = msg.content.replace(/\s+/g, ' ');
   if (discordMessage.slice(0, 6) === '$btcli' && discordMessage.length <= 50) {
     if (discordMessage.slice(0, 12) === '$btcli stake') {
-      const uid = discordMessage.slice(12);
-      if (
-        !Number.isInteger(Number(uid)) ||
-        Number(uid) < 0 ||
-        Number(uid) > 4095
-      ) {
-        msg.channel.send({
-          content: `UID should be an integer between 0 and 4095`,
-        });
-      } else {
-        const message = await msg.channel.send({ content: 'loading data...' });
-        requestData()
-          .then(async (NeuronData) => {
-            await message.delete();
-
-            if (NeuronData?.data?.neuron?.[Number(uid)]?.stake) {
-              msg.channel.send(
-                `UID:${uid} has τ${
-                  NeuronData?.data?.neuron?.[Number(uid)].stake / 1000000000
-                } staked `
-              );
-            } else {
-              msg.channel.send({ content: `No data` });
-            }
-          })
-          .catch(async (err) => {
-            await message.delete();
-            msg.channel.send({ content: `Not found data` });
-          });
-      }
+      stakeExecute(discordMessage, msg);
     } else if (discordMessage.slice(0, 14) === '$btcli inspect') {
       inspectExecute(discordMessage, msg);
     } else {
