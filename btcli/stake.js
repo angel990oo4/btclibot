@@ -2,8 +2,7 @@ const { requestData } = require('../utils/data');
 const { validUID } = require('../utils/utils');
 
 module.exports = {
-  async stakeExecute(discordMessage, msg) {
-    const uid = discordMessage.slice(12);
+  async stakeExecute(uid, msg) {
     if (!validUID(uid)) {
       msg.channel.send({
         content: `*UID should be an integer between 0 and 4095*`,

@@ -77,10 +77,12 @@ client.on('messageCreate', async (msg) => {
   if (msg.author.bot) return;
   const discordMessage = msg.content.replace(/\s+/g, ' ');
   if (discordMessage.slice(0, 6) === '$btcli' && discordMessage.length <= 50) {
-    if (discordMessage.slice(0, 12) === '$btcli stake') {
-      stakeExecute(discordMessage, msg);
-    } else if (discordMessage.slice(0, 14) === '$btcli inspect') {
-      inspectExecute(discordMessage, msg);
+    if (discordMessage.slice(0, 18) === '$btcli stake --uid') {
+      const uid = discordMessage.slice(18);
+      stakeExecute(uid, msg);
+    } else if (discordMessage.slice(0, 20) === '$btcli inspect --uid') {
+      const uid = discordMessage.slice(20);
+      inspectExecute(uid, msg);
     } else {
       switch (discordMessage) {
         case '$btcli': {
