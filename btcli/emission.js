@@ -1,5 +1,5 @@
 const { requestData } = require('../utils/data');
-const { generateCanva } = require('../btcli/chartNeuron');
+const { generateCanva } = require('../utils/chartNeuron');
 const { AttachmentBuilder } = require('discord.js');
 
 module.exports = {
