@@ -1,12 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const axios = require('axios');
-const { requestData } = require('./utils/data');
-const { ChartJSNodeCanvas } = require('chartjs-node-canvas');
-const { Chart } = require('chart.js');
-const { generateCanva } = require('./utils/chartNeuron');
-const { BtcliCommands } = require('./const/btclicommands');
 const { inspectExecute } = require('./btcli/inspect');
 const { emissionExecute, emissionExecuteRaw } = require('./btcli/emission');
 const { incentiveExecute, incentiveExecuteRaw } = require('./btcli/incentive');
