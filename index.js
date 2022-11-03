@@ -113,7 +113,10 @@ client.on('messageCreate', async (msg) => {
   if (msg.author.bot) return;
   const discordMessage = msg.content.replace(/\s+/g, ' ');
   if (discordMessage.slice(0, 6) === '$btcli') {
-    if (discordMessage.slice(0, 12) === '$btcli stake') {
+    if (
+      discordMessage.slice(0, 12) === '$btcli stake' &&
+      discordMessage.length <= 50
+    ) {
       const uid = discordMessage.slice(12);
       if (
         !Number.isInteger(Number(uid)) ||
