@@ -10,7 +10,6 @@ module.exports = {
       });
     } else {
       const message = await msg.channel.send({ content: 'loading data...' });
-
       requestData()
         .then(async (res) => {
           await message.delete();

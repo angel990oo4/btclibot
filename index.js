@@ -10,6 +10,7 @@ const { BtcliCommands } = require('./const/btclicommands');
 const { inspectExecute } = require('./btcli/inspect');
 const { emissionExecute, emissionExecuteRaw } = require('./btcli/emission');
 const { incentiveExecute, incentiveExecuteRaw } = require('./btcli/incentive');
+const { matagraphExecuteRaw } = require('./btcli/metagraph');
 
 const app = express();
 var corsOptions = {
@@ -167,47 +168,7 @@ client.on('messageCreate', async (msg) => {
           break;
         }
         case '$btcli metagraph --raw': {
-          const message = await msg.channel.send({
-            content: 'loading data...',
-          });
-          requestData()
-            .then(async (res) => {
-              await message.delete();
-              let NeuronData = res?.data?.neuron;
-              let csvContent = NeuronData.map((neuron, index) =>
-                [
-                  `${neuron.uid}`,
-                  `${neuron.hotkey}`,
-                  `${neuron.coldkey}`,
-                  `${neuron.stake / 1000000000}`,
-                  `${neuron.rank / 18446744073709551615}`,
-                  `${neuron.trust / 18446744073709551615}`,
-                  `${neuron.consensus / 18446744073709551615}`,
-                  `${neuron.incentive / 18446744073709551615}`,
-                  `${neuron.dividends / 18446744073709551615}`,
-                  `${neuron.emission / 1000000000}`,
-                  `${neuron.active}`,
-                ].join(', ')
-              );
-              csvContent.unshift(
-                'UID, HotKey, ColdKey, Stake, Rank, Trust, Consensus, Incentive, Dividends, Emission, Active'
-              );
-              csvContent = csvContent.join('\n');
-
-              const buffer = Buffer.from(csvContent, 'utf-8');
-              const file = new AttachmentBuilder(buffer, {
-                name: 'metagraph.csv',
-              });
-              msg.channel.send({
-                content: 'Metagraph raw value',
-                files: [file],
-              });
-            })
-            .catch((err) => {
-              msg.channel.send({
-                content: `${err}`,
-              });
-            });
+          matagraphExecuteRaw(msg);
           break;
         }
         case '$btcli incentive': {
