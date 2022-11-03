@@ -12,7 +12,7 @@ const { emissionExecute, emissionExecuteRaw } = require('./btcli/emission');
 const { incentiveExecute, incentiveExecuteRaw } = require('./btcli/incentive');
 const { matagraphExecuteRaw } = require('./btcli/metagraph');
 const { stakeExecute } = require('./btcli/stake');
-
+const { helpExecute } = require('./btcli/help');
 const app = express();
 var corsOptions = {
   origin: '*',
@@ -38,41 +38,6 @@ const {
   AttachmentBuilder,
 } = require('discord.js');
 const { token } = require('./config');
-
-//neuron data from MongoDB
-// let BitCliData = 'No Data';
-// Promise.resolve(requestData())
-//   .then((res) => {
-//     BitCliData = res;
-//   })
-//   .catch((err) => {
-//     BitCliData = `Can't get data`;
-//   });
-
-//integrate polkadot for bittensor substrate
-// const { realNeuron } = require('./polkadot/neuron');
-// let NeuronData = 'No Data';
-
-// const { NETWORKS } = require('./config/network');
-
-// const { api } = require('./polkadot/api');
-
-// let apiCtx;
-// const getNeurons = async () => {
-//   // let myInterval;
-//   try {
-//     apiCtx = await api(NETWORKS[0].endpoints);
-//     console.log('apiCtx', apiCtx);
-//     // NeuronData = await realNeuron(apiCtx);
-//     // myInterval = setInterval(async () => {
-//     // NeuronData = await realNeuron(apiCtx);
-//     // }, 120000);
-//   } catch (err) {
-//     // clearInterval(myInterval);
-//     getNeurons();
-//   }
-// };
-// getNeurons();
 
 const client = new Client({
   intents: [
@@ -125,15 +90,11 @@ client.on('messageCreate', async (msg) => {
     } else {
       switch (discordMessage) {
         case '$btcli': {
-          msg.channel.send({
-            content: `${BtcliCommands}`,
-          });
+          helpExecute(msg);
           break;
         }
         case '$btcli --help': {
-          msg.channel.send({
-            content: `${BtcliCommands}`,
-          });
+          helpExecute(msg);
           break;
         }
         case '$btcli metagraph --raw': {
@@ -188,18 +149,3 @@ const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}.`);
 });
-
-//backend API from MongoDB
-// setInterval(() => {
-//   Promise.resolve(requestData())
-//     .then((res) => {
-//       BitCliData = res;
-//     })
-//     .catch((err) => {
-//       BitCliData = `Can't get data`;
-//     });
-// }, 100000);
-
-// setInterval(() => {
-//   getNeurons();
-// }, 500000);
