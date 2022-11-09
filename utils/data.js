@@ -6,6 +6,12 @@ const requestData = async () => {
   return response;
 };
 
+const requestChain = async () => {
+  const response = await axios.get('http://127.0.0.1:5000/bot');
+  return response;
+};
+
 module.exports = {
   requestData: requestData,
+  requestChain: requestChain,
 };

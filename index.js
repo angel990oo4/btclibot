@@ -4,11 +4,13 @@ const cors = require('cors');
 const { inspectExecute } = require('./btcli/inspect');
 // const { emissionExecute, emissionExecuteRaw } = require('./btcli/emission');
 // const { incentiveExecute, incentiveExecuteRaw } = require('./btcli/incentive');
-const { matagraphExecuteRaw } = require('./btcli/metagraph');
+const { metagraphExecuteRaw } = require('./btcli/metagraph');
 const { stakeExecute } = require('./btcli/stake');
 const { helpExecute } = require('./btcli/help');
 const { factorExecute, factorExecuteRaw } = require('./btcli/factor');
-const { factors } = require('./const/btclicommands');
+const { chainParameterExecute } = require('./btcli/chain');
+const { factors, chain } = require('./const/btclicommands');
+
 const app = express();
 var corsOptions = {
   origin: '*',
@@ -101,6 +103,8 @@ client.on('messageCreate', async (msg) => {
       ['--ascending', '--descending'].includes(messageArray[3])
     ) {
       factorExecuteRaw(msg, messageArray[3], messageArray[1]);
+    } else if (messageArray.length === 2 && chain.includes(messageArray[1])) {
+      chainParameterExecute(msg, messageArray[1]);
     } else {
       switch (discordMessage) {
         case '$btcli': {
@@ -112,9 +116,21 @@ client.on('messageCreate', async (msg) => {
           break;
         }
         case '$btcli metagraph --raw': {
-          matagraphExecuteRaw(msg);
+          metagraphExecuteRaw(msg);
           break;
         }
+        // case '$btcli block': {
+        //   chainParameterExecute(msg, 'block');
+        // }
+        // case '$btcli difficulty': {
+        //   chainParameterExecute(msg, 'difficulty');
+        // }
+        // case '$btcli issuance': {
+        //   chainParameterExecute(msg, 'issuance');
+        // }
+        // case '$btcli next_halving': {
+        //   chainParameterExecute(msg, 'next_halving');
+        // }
         // case '$btcli incentive': {
         //   factorExecute(msg, (factor = 'incentive'));
         //   break;

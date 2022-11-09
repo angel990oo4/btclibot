@@ -2,7 +2,7 @@ const { requestData } = require('../utils/data');
 const { AttachmentBuilder } = require('discord.js');
 
 module.exports = {
-  async matagraphExecuteRaw(msg, order) {
+  async metagraphExecuteRaw(msg, order) {
     const message = await msg.channel.send({
       content: 'loading data...',
     });

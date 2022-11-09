@@ -18,7 +18,9 @@ const factors = [
   'consensus',
   'dividends',
 ];
+const chain = ['block', 'difficulty', 'issuance', 'next_halving'];
 module.exports = {
   BtcliCommands,
   factors,
+  chain,
 };
