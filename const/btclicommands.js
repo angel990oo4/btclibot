@@ -6,7 +6,11 @@ const BtcliCommands =
 **$btcli incentive**: T*he plot of sorted incentive value* \n\
 **$btcli incentive --raw**: *The csv file of incentive value* \n\
 **$btcli incentive --raw [--[ascending/descending]]**: *The csv file of (optionally) sorted incentive values* \n\
-```Same commands for emission, rank, trust, consensus, dividends```\
+*Same commands for emission, rank, trust, consensus, dividends*\n\n\
+**$btcli block**: *Current block number*\n\
+**$btcli difficulty**: *Difficulty value*\n\
+**$btcli issuance**: *Total issuance*\n\
+**$btcli next_halving**: *The left time until next halving*\n\
 ';
 
 const factors = [
