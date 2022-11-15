@@ -127,9 +127,22 @@ module.exports = {
     requestHistory({ uid: uid, range: range, factor: factor })
       .then(async (res) => {
         await message.delete();
-        console.log('response', res.data);
+        let title = factor.toUpperCase();
+        let labels = Array.from(new Array(parseInt(range)), (x, i) => i);
+        let data = [];
+        Object.keys(res.data).forEach((k, i) => {
+          data.push(res.data[k][uid][factor]);
+        });
+        const attachment = await generateCanva(labels, data, title);
+        chartEmbed = {
+          title: 'MessageEmbed title',
+          image: {
+            url: 'attachment://graph.png',
+          },
+        };
         msg.channel.send({
-          content: `sent data successfully`,
+          content: `${title} value`,
+          files: [attachment],
         });
       })
       .catch((err) => {

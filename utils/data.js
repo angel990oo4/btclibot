@@ -12,7 +12,7 @@ const requestChain = async () => {
 };
 
 const requestHistory = async (params) => {
-  const response = await axios.get('http://127.0.0.1:5000/subtensorapitest', {
+  const response = await axios.get('http://127.0.0.1:5000/subtensorapi', {
     data: params,
   });
   return response;
