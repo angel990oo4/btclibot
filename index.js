@@ -7,7 +7,11 @@ const { inspectExecute } = require('./btcli/inspect');
 const { metagraphExecuteRaw } = require('./btcli/metagraph');
 const { stakeExecute } = require('./btcli/stake');
 const { helpExecute } = require('./btcli/help');
-const { factorExecute, factorExecuteRaw } = require('./btcli/factor');
+const {
+  factorExecute,
+  factorExecuteRaw,
+  factorHistoryExecute,
+} = require('./btcli/factor');
 const { chainParameterExecute } = require('./btcli/chain');
 const { factors, chain } = require('./const/btclicommands');
 
@@ -82,7 +86,10 @@ client.on('messageCreate', async (msg) => {
   const discordMessage = msg.content.replace(/\s+/g, ' ');
   const messageArray = discordMessage.split(' ');
   if (discordMessage.slice(0, 6) === '$btcli' && discordMessage.length <= 50) {
-    if (discordMessage.slice(0, 18) === '$btcli stake --uid') {
+    if (
+      discordMessage.slice(0, 18) === '$btcli stake --uid' &&
+      messageArray.length == 4
+    ) {
       const uid = discordMessage.slice(18);
       stakeExecute(uid, msg);
     } else if (discordMessage.slice(0, 20) === '$btcli inspect --uid') {
@@ -105,6 +112,18 @@ client.on('messageCreate', async (msg) => {
       factorExecuteRaw(msg, messageArray[3], messageArray[1]);
     } else if (messageArray.length === 2 && chain.includes(messageArray[1])) {
       chainParameterExecute(msg, messageArray[1]);
+    } else if (
+      messageArray.length === 6 &&
+      factors.includes(messageArray[1]) &&
+      messageArray[2] === '--uid' &&
+      messageArray[4] === '--range'
+    ) {
+      factorHistoryExecute(
+        msg,
+        messageArray[1],
+        messageArray[3],
+        messageArray[5]
+      );
     } else {
       switch (discordMessage) {
         case '$btcli': {

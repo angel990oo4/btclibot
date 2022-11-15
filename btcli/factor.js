@@ -1,4 +1,4 @@
-const { requestData } = require('../utils/data');
+const { requestData, requestHistory } = require('../utils/data');
 const { generateCanva } = require('../utils/chartNeuron');
 const { AttachmentBuilder } = require('discord.js');
 
@@ -111,6 +111,25 @@ module.exports = {
         msg.channel.send({
           content: `${title} raw value`,
           files: [file],
+        });
+      })
+      .catch((err) => {
+        msg.channel.send({
+          content: `'${err}`,
+        });
+      });
+  },
+
+  async factorHistoryExecute(msg, factor, uid, range) {
+    const message = await msg.channel.send({
+      content: 'loading data...',
+    });
+    requestHistory({ uid: uid, range: range, factor: factor })
+      .then(async (res) => {
+        await message.delete();
+        console.log('response', res.data);
+        msg.channel.send({
+          content: `sent data successfully`,
         });
       })
       .catch((err) => {
