@@ -11,7 +11,15 @@ const requestChain = async () => {
   return response;
 };
 
+const requestHistory = async (params) => {
+  const response = await axios.get('http://127.0.0.1:5000/subtensorapitest', {
+    data: params,
+  });
+  return response;
+};
+
 module.exports = {
   requestData: requestData,
   requestChain: requestChain,
+  requestHistory: requestHistory,
 };
