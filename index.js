@@ -138,42 +138,6 @@ client.on('messageCreate', async (msg) => {
           metagraphExecuteRaw(msg);
           break;
         }
-        // case '$btcli block': {
-        //   chainParameterExecute(msg, 'block');
-        // }
-        // case '$btcli difficulty': {
-        //   chainParameterExecute(msg, 'difficulty');
-        // }
-        // case '$btcli issuance': {
-        //   chainParameterExecute(msg, 'issuance');
-        // }
-        // case '$btcli next_halving': {
-        //   chainParameterExecute(msg, 'next_halving');
-        // }
-        // case '$btcli incentive': {
-        //   factorExecute(msg, (factor = 'incentive'));
-        //   break;
-        // }
-        // case '$btcli incentive --raw': {
-        //   factorExecuteRaw(msg, 'raw', (factor = 'incentive'));
-        //   break;
-        // }
-        // case '$btcli incentive --raw --ascending': {
-        //   factorExecuteRaw(msg, 'ascending', (factor = 'incentive'));
-        //   break;
-        // }
-        // case '$btcli incentive --raw --descending': {
-        //   factorExecuteRaw(msg, 'descending', (factor = 'incentive'));
-        //   break;
-        // }
-        // case '$btcli emission': {
-        //   emissionExecute(msg);
-        //   break;
-        // }
-        // case '$btcli emission --raw': {
-        //   emissionExecuteRaw(msg);
-        //   break;
-        // }
         default:
           msg.channel.send({
             content: `**$btcli: ${discordMessage.slice(

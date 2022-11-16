@@ -127,7 +127,8 @@ module.exports = {
     requestHistory({ uid: uid, range: range, factor: factor })
       .then(async (res) => {
         await message.delete();
-        let title = factor.toUpperCase();
+        // let title = factor.toUpperCase();
+        let title = `The ${factor} values of uid ${uid} for last ${range} days`;
         let labels = Array.from(new Array(parseInt(range)), (x, i) => i);
         let data = [];
         Object.keys(res.data).forEach((k, i) => {
@@ -141,7 +142,7 @@ module.exports = {
           },
         };
         msg.channel.send({
-          content: `${title} value`,
+          content: `The ${factor} values of uid ${uid} for last ${range} days`,
           files: [attachment],
         });
       })
