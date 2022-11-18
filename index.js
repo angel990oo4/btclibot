@@ -155,7 +155,15 @@ client.on('messageCreate', async (msg) => {
           helpExecute(msg);
           break;
         }
+        case '$btcli —help': {
+          helpExecute(msg);
+          break;
+        }
         case '$btcli metagraph --raw': {
+          metagraphExecuteRaw(msg);
+          break;
+        }
+        case '$btcli metagraph —raw': {
           metagraphExecuteRaw(msg);
           break;
         }
