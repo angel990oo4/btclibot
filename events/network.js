@@ -30,8 +30,7 @@ module.exports = {
           ) {
             await interaction.editReply(`${res.data.response[0]}`);
           } else {
-            // const channel = client.channels.cache.get("1015218216592740382");
-            const channel = client.channels.cache.get('1015218277699571816');
+            const channel = client.channels.cache.get('1032368418902519841');
             channel.send(`${res.data.response[0]}`);
             await interaction.editReply('Sent a message successfully');
           }
