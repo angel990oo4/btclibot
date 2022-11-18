@@ -24,12 +24,14 @@ module.exports = {
         .then(async (res) => {
           if (
             res.data.response[0] === 'Error! Endpoint not available.' ||
-            res.data.response[0] === 'Error! UID not synced, Request timeout.'
+            res.data.response[0] ===
+              'Error! UID not synced, Request timeout.' ||
+            res.data.response[0] === 'Error! Modality not implemented.'
           ) {
             await interaction.editReply(`${res.data.response[0]}`);
           } else {
             // const channel = client.channels.cache.get("1015218216592740382");
-            const channel = client.channels.cache.get('1032368418902519841');
+            const channel = client.channels.cache.get('1015218277699571816');
             channel.send(`${res.data.response[0]}`);
             await interaction.editReply('Sent a message successfully');
           }

@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require("discord.js");
+const { SlashCommandBuilder } = require('discord.js');
 const {
   ActionRowBuilder,
   ModalBuilder,
@@ -6,50 +6,50 @@ const {
   TextInputStyle,
   InteractionType,
   SelectMenuBuilder,
-} = require("discord.js");
+} = require('discord.js');
 
-const wait = require("node:timers/promises").setTimeout;
-const axios = require("axios");
+const wait = require('node:timers/promises').setTimeout;
+const axios = require('axios');
 
 module.exports = {
   data: new SlashCommandBuilder()
-    .setName("server")
-    .setDescription("Querying the network!"),
+    .setName('server')
+    .setDescription('Querying the network!'),
 
   async execute(interaction) {
     // Create the modal
     const modal = new ModalBuilder()
-      .setCustomId("myModal")
-      .setTitle("My Modal");
+      .setCustomId('myModal')
+      .setTitle('My Modal');
 
     // Add components to modal
 
     const networkQuery = new SelectMenuBuilder()
-      .setCustomId("select")
-      .setPlaceholder("Nothing selected")
+      .setCustomId('select')
+      .setPlaceholder('Nothing selected')
       .addOptions([
         {
-          label: "Select me",
-          description: "This is a description",
-          value: "first_option",
+          label: 'Select me',
+          description: 'This is a description',
+          value: 'first_option',
         },
         {
-          label: "You can select me too",
-          description: "This is also a description",
-          value: "second_option",
+          label: 'You can select me too',
+          description: 'This is also a description',
+          value: 'second_option',
         },
       ]);
 
     // Create the text input components
     const favoriteColorInput = new TextInputBuilder()
-      .setCustomId("favoriteColorInput")
+      .setCustomId('favoriteColorInput')
       // The label is the prompt the user sees for this input
       .setLabel("What's your favorite color?")
       // Short means only a single line of text
       .setStyle(TextInputStyle.Short);
 
     const hobbiesInput = new TextInputBuilder()
-      .setCustomId("hobbiesInput")
+      .setCustomId('hobbiesInput')
       .setLabel("What's some of your favorite hobbies?")
       // Paragraph means multiple lines of text.
       .setStyle(TextInputStyle.Paragraph);

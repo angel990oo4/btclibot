@@ -5,59 +5,59 @@ const {
   ModalBuilder,
   TextInputBuilder,
   TextInputStyle,
-} = require("discord.js");
-const wait = require("node:timers/promises").setTimeout;
-let options = require("../store/option");
+} = require('discord.js');
+const wait = require('node:timers/promises').setTimeout;
+let options = require('../store/option');
 
 module.exports = {
   data: new SlashCommandBuilder()
-    .setName("generate")
-    .setDescription("Querying the network!"),
+    .setName('generate')
+    .setDescription('Querying the network!'),
 
   async execute(interaction) {
     options = {
       do_sample: true,
       early_stopping: false,
-      network: "nakamoto",
-      no_repeat_ngram_size: "2",
-      num_beams: "5",
-      num_return_sequences: "1",
-      num_to_generate: "64",
-      prompt: "Prompt message",
-      top_p: "0.95",
-      topk: "512",
+      network: 'nakamoto',
+      no_repeat_ngram_size: '2',
+      num_beams: '5',
+      num_return_sequences: '1',
+      num_to_generate: '64',
+      prompt: 'Prompt message',
+      top_p: '0.95',
+      topk: '512',
       uid: [72],
     };
     const modal = new ModalBuilder()
-      .setCustomId("optionModal")
-      .setTitle("Bittensor Options");
+      .setCustomId('optionModal')
+      .setTitle('Bittensor Options');
     const customerMessage = new TextInputBuilder()
-      .setCustomId("customerMessage")
-      .setLabel("Customer Message")
+      .setCustomId('customerMessage')
+      .setLabel('Customer Message')
       .setStyle(TextInputStyle.Paragraph)
       .setValue(options.prompt);
 
     const topK = new TextInputBuilder()
-      .setCustomId("topK")
-      .setLabel("TopK(Number)")
+      .setCustomId('topK')
+      .setLabel('TopK(Number)')
       .setStyle(TextInputStyle.Short)
       .setValue(options.topk);
 
     const length = new TextInputBuilder()
-      .setCustomId("length")
-      .setLabel("Length(Number)")
+      .setCustomId('length')
+      .setLabel('Length(Number)')
       .setStyle(TextInputStyle.Short)
       .setValue(options.num_to_generate);
 
     const numBeams = new TextInputBuilder()
-      .setCustomId("numBeams")
-      .setLabel("Num Beams(Number)")
+      .setCustomId('numBeams')
+      .setLabel('Num Beams(Number)')
       .setStyle(TextInputStyle.Short)
       .setValue(options.num_beams);
 
     const noRepeatNgramSize = new TextInputBuilder()
-      .setCustomId("noRepeatNgramSize")
-      .setLabel("No Repeat Ngram Size(Number)")
+      .setCustomId('noRepeatNgramSize')
+      .setLabel('No Repeat Ngram Size(Number)')
       .setStyle(TextInputStyle.Short)
       .setValue(options.no_repeat_ngram_size);
 
