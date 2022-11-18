@@ -14,6 +14,8 @@ const {
 } = require('./btcli/factor');
 const { chainParameterExecute } = require('./btcli/chain');
 const { factors, chain } = require('./const/btclicommands');
+const modalevent = require('./events/modal');
+const networkevent = require('./events/network');
 
 const app = express();
 var corsOptions = {
@@ -67,17 +69,31 @@ client.once('ready', () => {
 });
 
 client.on('interactionCreate', async (interaction) => {
-  if (!interaction.isChatInputCommand()) return;
-  const command = client.commands.get(interaction.commandName);
-  if (!command) return;
-  try {
-    await command.execute(interaction);
-  } catch (error) {
-    console.error(error);
-    await interaction.reply({
-      content: 'There was an error while executing this command!',
-      ephemeral: true,
-    });
+  if (
+    !interaction.isChatInputCommand() &&
+    !interaction.isModalSubmit() &&
+    !interaction.isSelectMenu()
+  )
+    return;
+
+  if (interaction.isChatInputCommand()) {
+    const command = client.commands.get(interaction.commandName);
+    if (!command) return;
+    try {
+      await command.execute(interaction);
+    } catch (error) {
+      console.error(error);
+      await interaction.reply({
+        content: 'There was an error while executing this command!',
+        ephemeral: true,
+      });
+    }
+  }
+  if (interaction.type === InteractionType.ModalSubmit) {
+    modalevent.execute(interaction);
+  }
+  if (interaction.isSelectMenu()) {
+    networkevent.execute(client, interaction);
   }
 });
 
@@ -87,10 +103,12 @@ client.on('messageCreate', async (msg) => {
   const messageArray = discordMessage.split(' ');
   if (discordMessage.slice(0, 6) === '$btcli' && discordMessage.length <= 50) {
     if (
-      discordMessage.slice(0, 18) === '$btcli stake --uid' &&
-      messageArray.length == 4
+      messageArray.length == 4 &&
+      // discordMessage.slice(0, 18) === '$btcli stake --uid'
+      messageArray[1] === 'stake' &&
+      (messageArray[2] === '--uid' || messageArray[2] === '—uid')
     ) {
-      const uid = discordMessage.slice(18);
+      const uid = messageArray[3];
       stakeExecute(uid, msg);
     } else if (discordMessage.slice(0, 20) === '$btcli inspect --uid') {
       const uid = discordMessage.slice(20);
