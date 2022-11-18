@@ -128,7 +128,9 @@ client.on('messageCreate', async (msg) => {
       messageArray.length === 4 &&
       factors.includes(messageArray[1]) &&
       (messageArray[2] === '--raw' || messageArray[2] === '—raw') &&
-      ['--ascending', '--descending'].includes(messageArray[3])
+      ['--ascending', '--descending', '—ascending', '—descending'].includes(
+        messageArray[3]
+      )
     ) {
       factorExecuteRaw(msg, messageArray[3], messageArray[1]);
     } else if (messageArray.length === 2 && chain.includes(messageArray[1])) {

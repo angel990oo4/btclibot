@@ -72,7 +72,43 @@ module.exports = {
               })
               .join('\n');
             break;
+          case '—ascending':
+            csvContent = NeuronData.sort(function (a, b) {
+              return a[factor] - b[factor];
+            })
+              .map((neuron, index) => {
+                if (factor === 'emission' || factor === 'stake') {
+                  return [
+                    `${neuron.uid}`,
+                    `${neuron[factor] / 1000000000}`,
+                  ].join(',');
+                } else
+                  return [
+                    `${neuron.uid}`,
+                    `${neuron[factor] / 1844674407.3709551615 / 1000000000}`,
+                  ].join(',');
+              })
+              .join('\n');
+            break;
           case '--descending':
+            csvContent = NeuronData.sort(function (a, b) {
+              return b[factor] - a[factor];
+            })
+              .map((neuron, index) => {
+                if (factor === 'emission' || factor === 'stake') {
+                  return [
+                    `${neuron.uid}`,
+                    `${neuron[factor] / 1000000000}`,
+                  ].join(',');
+                } else
+                  return [
+                    `${neuron.uid}`,
+                    `${neuron[factor] / 1844674407.3709551615 / 1000000000}`,
+                  ].join(',');
+              })
+              .join('\n');
+            break;
+          case '—descending':
             csvContent = NeuronData.sort(function (a, b) {
               return b[factor] - a[factor];
             })
