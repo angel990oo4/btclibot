@@ -104,14 +104,17 @@ client.on('messageCreate', async (msg) => {
   if (discordMessage.slice(0, 6) === '$btcli' && discordMessage.length <= 50) {
     if (
       messageArray.length == 4 &&
-      // discordMessage.slice(0, 18) === '$btcli stake --uid'
       messageArray[1] === 'stake' &&
       (messageArray[2] === '--uid' || messageArray[2] === '—uid')
     ) {
       const uid = messageArray[3];
       stakeExecute(uid, msg);
-    } else if (discordMessage.slice(0, 20) === '$btcli inspect --uid') {
-      const uid = discordMessage.slice(20);
+    } else if (
+      messageArray.length == 4 &&
+      messageArray[1] === 'inspect' &&
+      (messageArray[2] === '--uid' || messageArray[2] === '—uid')
+    ) {
+      const uid = messageArray[3];
       inspectExecute(uid, msg);
     } else if (messageArray.length === 2 && factors.includes(messageArray[1])) {
       factorExecute(msg, messageArray[1]);
