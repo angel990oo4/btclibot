@@ -121,13 +121,13 @@ client.on('messageCreate', async (msg) => {
     } else if (
       messageArray.length === 3 &&
       factors.includes(messageArray[1]) &&
-      messageArray[2] === '--raw'
+      (messageArray[2] === '--raw' || messageArray[2] === '—raw')
     ) {
       factorExecuteRaw(msg, 'raw', messageArray[1]);
     } else if (
       messageArray.length === 4 &&
       factors.includes(messageArray[1]) &&
-      messageArray[2] === '--raw' &&
+      (messageArray[2] === '--raw' || messageArray[2] === '—raw') &&
       ['--ascending', '--descending'].includes(messageArray[3])
     ) {
       factorExecuteRaw(msg, messageArray[3], messageArray[1]);
@@ -136,8 +136,8 @@ client.on('messageCreate', async (msg) => {
     } else if (
       messageArray.length === 6 &&
       factors.includes(messageArray[1]) &&
-      messageArray[2] === '--uid' &&
-      messageArray[4] === '--range'
+      (messageArray[2] === '--uid' || messageArray[2] === '—uid') &&
+      (messageArray[4] === '--range' || messageArray[4] === '—range')
     ) {
       factorHistoryExecute(
         msg,
