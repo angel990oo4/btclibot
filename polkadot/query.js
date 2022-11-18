@@ -5,7 +5,6 @@ module.exports = {
         .multi(Array.from(new Array(4096), (x, i) => i))
         .then(resolve)
         .catch((err) => {
-          console.log(err);
           reject(err);
         });
     });

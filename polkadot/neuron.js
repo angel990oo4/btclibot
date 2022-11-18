@@ -7,7 +7,6 @@ module.exports = {
     // if (api) {
     // const apiCtx = await api(NETWORKS[0].endpoints);
     const result = await getNeurons(apiCtx);
-    console.log('result', result);
 
     const neurons = result.map((result) => {
       const neuron = result.value;

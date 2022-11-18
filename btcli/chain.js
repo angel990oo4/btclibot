@@ -8,7 +8,6 @@ module.exports = {
     requestChain()
       .then(async (res) => {
         await message.delete();
-        console.log('res', params, res.data);
         let data = '';
         switch (params) {
           case 'block':
