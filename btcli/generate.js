@@ -6,27 +6,28 @@ module.exports = {
     const message = await msg.channel.send({
       content: 'loading data...',
     });
+    let optionsInstance = Object.assign({}, options);
     for (i = 2; i < messageArray.length; i += 2) {
-      if (options.hasOwnProperty(messageArray[i])) {
-        options[messageArray[i]] = messageArray[i + 1];
+      if (optionsInstance.hasOwnProperty(messageArray[i])) {
+        optionsInstance[messageArray[i]] = messageArray[i + 1];
       }
     }
+
     await axios
       .post('https://playground-api.bittensor.com/seq2seq', {
-        do_sample: options.do_sample,
-        early_stopping: options.early_stopping,
-        network: options.network,
-        no_repeat_ngram_size: Number(options.no_repeat_ngram_size),
-        num_beams: Number(options.num_beams),
-        num_return_sequences: Number(options.num_return_sequences),
-        num_to_generate: Number(options.num_to_generate),
-        prompt: options.prompt,
-        top_p: Number(options.top_p),
-        topk: Number(options.topk),
-        uid: options.uid,
+        do_sample: optionsInstance.do_sample,
+        early_stopping: optionsInstance.early_stopping,
+        network: optionsInstance.network,
+        no_repeat_ngram_size: Number(optionsInstance.no_repeat_ngram_size),
+        num_beams: Number(optionsInstance.num_beams),
+        num_return_sequences: Number(optionsInstance.num_return_sequences),
+        num_to_generate: Number(optionsInstance.num_to_generate),
+        prompt: optionsInstance.prompt,
+        top_p: Number(optionsInstance.top_p),
+        topk: Number(optionsInstance.topk),
+        uid: optionsInstance.uid,
       })
       .then(async (res) => {
-        console.log('res', res.data);
         await message.delete();
         if (
           res.data.response[0] === 'Error! Endpoint not available.' ||
