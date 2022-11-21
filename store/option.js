@@ -6,8 +6,8 @@ module.exports = {
   num_beams: '5',
   num_return_sequences: '1',
   num_to_generate: '64',
-  prompt: 'Prompt message',
+  prompt: 'I am a btcli bot',
   top_p: '0.95',
   topk: '512',
-  uid: [72],
+  uid: [80],
 };
