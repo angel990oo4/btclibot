@@ -11,6 +11,7 @@ const BtcliCommands =
 **$btcli difficulty**: *Difficulty value*\n\
 **$btcli issuance**: *Total issuance*\n\
 **$btcli next_halving**: *The left time until next halving*\n\
+**$btcli generate**: *Bittensor reponse bot*\n\
 ';
 
 const factors = [
