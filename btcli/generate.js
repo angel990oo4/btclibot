@@ -6,6 +6,11 @@ module.exports = {
     const message = await msg.channel.send({
       content: 'loading data...',
     });
+    for (i = 2; i < messageArray.length; i += 2) {
+      if (options.hasOwnProperty(messageArray[i])) {
+        options[messageArray[i]] = messageArray[i + 1];
+      }
+    }
     await axios
       .post('https://playground-api.bittensor.com/seq2seq', {
         do_sample: options.do_sample,
