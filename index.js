@@ -7,6 +7,7 @@ const { inspectExecute } = require('./btcli/inspect');
 const { metagraphExecuteRaw } = require('./btcli/metagraph');
 const { stakeExecute } = require('./btcli/stake');
 const { helpExecute } = require('./btcli/help');
+const { generateExecute } = require('./btcli/generate');
 const {
   factorExecute,
   factorExecuteRaw,
@@ -147,6 +148,8 @@ client.on('messageCreate', async (msg) => {
         messageArray[3],
         messageArray[5]
       );
+    } else if (messageArray[1] === 'generate') {
+      generateExecute(msg, messageArray);
     } else {
       switch (discordMessage) {
         case '$btcli': {
