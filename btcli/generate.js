@@ -25,7 +25,7 @@ module.exports = {
         prompt: optionsInstance.prompt,
         top_p: Number(optionsInstance.top_p),
         topk: Number(optionsInstance.topk),
-        uid: optionsInstance.uid,
+        uid: optionsInstance.uid.split(',').map((i) => Number(i)),
       })
       .then(async (res) => {
         await message.delete();

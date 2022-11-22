@@ -9,5 +9,5 @@ module.exports = {
   prompt: 'I am a btcli bot',
   top_p: '0.95',
   topk: '512',
-  uid: [80],
+  uid: '80',
 };

@@ -102,7 +102,7 @@ client.on('messageCreate', async (msg) => {
   if (msg.author.bot) return;
   const discordMessage = msg.content.replace(/\s+/g, ' ');
   const messageArray = discordMessage.split(' ');
-  if (discordMessage.slice(0, 6) === '$btcli' && discordMessage.length <= 50) {
+  if (discordMessage.slice(0, 6) === '$btcli' && discordMessage.length <= 80) {
     if (
       messageArray.length == 4 &&
       messageArray[1] === 'stake' &&
