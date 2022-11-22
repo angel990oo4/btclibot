@@ -15,9 +15,9 @@ module.exports = {
           await message.delete();
           if (NeuronData?.data?.neuron?.[Number(uid)]?.stake) {
             const stakeEmbed = new EmbedBuilder().setDescription(
-              `UID:${uid} has τ${
+              `UID:**${uid}** has **τ${
                 NeuronData?.data?.neuron?.[Number(uid)].stake / 1000000000
-              } staked `
+              }** staked `
             );
             msg.channel.send({ embeds: [stakeEmbed] });
           } else {
