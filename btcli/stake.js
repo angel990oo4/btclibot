@@ -1,5 +1,6 @@
 const { requestData } = require('../utils/data');
 const { validUID } = require('../utils/utils');
+const { EmbedBuilder } = require('discord.js');
 
 module.exports = {
   async stakeExecute(uid, msg) {
@@ -13,16 +14,18 @@ module.exports = {
         .then(async (NeuronData) => {
           await message.delete();
           if (NeuronData?.data?.neuron?.[Number(uid)]?.stake) {
-            msg.channel.send(
+            const stakeEmbed = new EmbedBuilder().setDescription(
               `UID:${uid} has τ${
                 NeuronData?.data?.neuron?.[Number(uid)].stake / 1000000000
               } staked `
             );
+            msg.channel.send({ embeds: [stakeEmbed] });
           } else {
             msg.channel.send({ content: `No data` });
           }
         })
         .catch(async (err) => {
+          console.log('err', err);
           await message.delete();
           msg.channel.send({ content: `Not found data` });
         });
