@@ -3,13 +3,26 @@ let options = require('../store/option');
 
 module.exports = {
   async generateExecute(msg, messageArray) {
+    console.log('messageArray', messageArray);
     const message = await msg.channel.send({
       content: 'loading data...',
     });
     let optionsInstance = Object.assign({}, options);
-    for (i = 2; i < messageArray.length; i += 2) {
+    let optionItem = '';
+    for (i = 2; i < messageArray.length; i++) {
       if (optionsInstance.hasOwnProperty(messageArray[i])) {
-        optionsInstance[messageArray[i]] = messageArray[i + 1];
+        optionItem = messageArray[i];
+        optionsInstance[optionItem] = '';
+      } else {
+        if (!!optionsInstance[optionItem])
+          optionsInstance[optionItem] = optionsInstance[optionItem].concat(
+            ' ',
+            messageArray[i]
+          );
+        else
+          optionsInstance[optionItem] = optionsInstance[optionItem].concat(
+            messageArray[i]
+          );
       }
     }
 
