@@ -1,4 +1,4 @@
-module.exports = {
+const options = {
   do_sample: true,
   early_stopping: false,
   network: 'nakamoto',
@@ -10,4 +10,23 @@ module.exports = {
   top_p: '0.95',
   topk: '512',
   uid: '80',
+};
+
+const paramOptions = [
+  '--do_sample',
+  '--early_stopping',
+  '--network',
+  '--no_repeat_ngram_size',
+  '--num_beams',
+  '--num_return_sequences',
+  '--num_to_generate',
+  '--prompt',
+  '--top_p',
+  '--topk',
+  '--uid',
+];
+
+module.exports = {
+  options,
+  paramOptions,
 };

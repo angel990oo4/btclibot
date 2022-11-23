@@ -1,5 +1,5 @@
 const axios = require('axios');
-let options = require('../store/option');
+let { options, paramOptions } = require('../store/option');
 
 module.exports = {
   async generateExecute(msg, messageArray) {
@@ -9,11 +9,13 @@ module.exports = {
     });
     let optionsInstance = Object.assign({}, options);
     let optionItem = '';
+    let paramDetected = false;
     for (i = 2; i < messageArray.length; i++) {
-      if (optionsInstance.hasOwnProperty(messageArray[i])) {
-        optionItem = messageArray[i];
+      if (paramOptions.includes(messageArray[i])) {
+        optionItem = messageArray[i].slice(2);
         optionsInstance[optionItem] = '';
-      } else {
+        paramDetected = true;
+      } else if (paramDetected) {
         if (!!optionsInstance[optionItem])
           optionsInstance[optionItem] = optionsInstance[optionItem].concat(
             ' ',
@@ -23,6 +25,12 @@ module.exports = {
           optionsInstance[optionItem] = optionsInstance[optionItem].concat(
             messageArray[i]
           );
+      } else {
+        await message.delete();
+        msg.channel.send({
+          content: 'Please specify the correct options',
+        });
+        return;
       }
     }
 
