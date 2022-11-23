@@ -3,7 +3,6 @@ let { options, paramOptions } = require('../store/option');
 
 module.exports = {
   async generateExecute(msg, messageArray) {
-    console.log('messageArray', messageArray);
     const message = await msg.channel.send({
       content: 'loading data...',
     });
