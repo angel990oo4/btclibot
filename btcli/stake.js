@@ -27,7 +27,7 @@ module.exports = {
         .catch(async (err) => {
           console.log('err', err);
           await message.delete();
-          msg.channel.send({ content: `Not found data` });
+          msg.channel.send({ content: `No data found ` });
         });
     }
   },
