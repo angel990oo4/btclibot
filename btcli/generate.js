@@ -36,8 +36,9 @@ module.exports = {
 
     await axios
       .post('https://playground-api.bittensor.com/seq2seq', {
-        do_sample: optionsInstance.do_sample,
-        early_stopping: optionsInstance.early_stopping,
+        do_sample: optionsInstance.do_sample === 'true' ? true : false,
+        early_stopping:
+          optionsInstance.early_stopping === 'true' ? true : false,
         network: optionsInstance.network,
         no_repeat_ngram_size: Number(optionsInstance.no_repeat_ngram_size),
         num_beams: Number(optionsInstance.num_beams),

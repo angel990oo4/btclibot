@@ -1,6 +1,6 @@
 const options = {
-  do_sample: true,
-  early_stopping: false,
+  do_sample: 'true',
+  early_stopping: 'false',
   network: 'nakamoto',
   no_repeat_ngram_size: '2',
   num_beams: '5',
