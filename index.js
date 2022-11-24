@@ -42,7 +42,7 @@ const {
   MessageAttachment,
   AttachmentBuilder,
 } = require('discord.js');
-const { token } = require('./config');
+const { token, dbusername, dbpassword, dbname } = require('./config');
 
 const client = new Client({
   intents: [
@@ -185,6 +185,25 @@ client.on('messageCreate', async (msg) => {
 });
 
 client.login(token);
+
+// MongoDB connection:
+// const db = require('./models');
+
+// db.mongoose
+//   .connect(
+//     `mongodb+srv://${dbusername}:${dbpassword}@bittensordb.3afdc.mongodb.net/${dbname}?retryWrites=true&w=majority`,
+//     {
+//       useNewUrlParser: true,
+//       useUnifiedTopology: true,
+//     }
+//   )
+//   .then(() => {
+//     console.log('Successfully connect to MongoDB.');
+//   })
+//   .catch((err) => {
+//     console.error('Connection error', err);
+//     process.exit();
+//   });
 
 // simple route
 app.get('/', (req, res) => {
