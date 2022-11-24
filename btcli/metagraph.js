@@ -35,7 +35,7 @@ module.exports = {
           name: 'metagraph.csv',
         });
         const metagraphEmbed = new EmbedBuilder().setDescription(
-          `The ${factor} values of uid ${uid} for last ${range} days`
+          `Metagraph raw value`
         );
         msg.channel.send({
           embeds: [metagraphEmbed],
