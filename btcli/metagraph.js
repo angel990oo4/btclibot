@@ -1,5 +1,6 @@
 const { requestData } = require('../utils/data');
 const { AttachmentBuilder } = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 
 module.exports = {
   async metagraphExecuteRaw(msg, order) {
@@ -33,8 +34,11 @@ module.exports = {
         const file = new AttachmentBuilder(buffer, {
           name: 'metagraph.csv',
         });
+        const metagraphEmbed = new EmbedBuilder().setDescription(
+          `The ${factor} values of uid ${uid} for last ${range} days`
+        );
         msg.channel.send({
-          content: 'Metagraph raw value',
+          embeds: [metagraphEmbed],
           files: [file],
         });
       })

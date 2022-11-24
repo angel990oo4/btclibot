@@ -1,6 +1,6 @@
 const { requestData, requestHistory } = require('../utils/data');
 const { generateCanva } = require('../utils/chartNeuron');
-const { AttachmentBuilder } = require('discord.js');
+const { AttachmentBuilder, EmbedBuilder } = require('discord.js');
 
 module.exports = {
   async factorExecute(msg, factor) {
@@ -181,8 +181,11 @@ module.exports = {
             url: 'attachment://graph.png',
           },
         };
+        const factorEmbed = new EmbedBuilder().setDescription(
+          `The ${factor} values of uid ${uid} for last ${range} days`
+        );
         msg.channel.send({
-          content: `The ${factor} values of uid ${uid} for last ${range} days`,
+          embeds: [factorEmbed],
           files: [attachment],
         });
       })
