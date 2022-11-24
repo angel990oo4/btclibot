@@ -33,9 +33,11 @@ module.exports = {
           files: [attachment],
         });
       })
-      .catch((err) => {
+      .catch(async (err) => {
+        await message.delete();
+        console.log('ERROR', err);
         msg.channel.send({
-          content: `${err}`,
+          content: `No data found`,
         });
       });
   },
@@ -60,9 +62,11 @@ module.exports = {
           files: [file],
         });
       })
-      .catch((err) => {
+      .catch(async (err) => {
+        await message.delete();
+        console.log('ERROR', err);
         msg.channel.send({
-          content: `${err}`,
+          content: `No data found`,
         });
       });
   },

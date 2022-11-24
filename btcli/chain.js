@@ -33,9 +33,11 @@ module.exports = {
           embeds: [chainEmbed],
         });
       })
-      .catch((err) => {
+      .catch(async (err) => {
+        await message.delete();
+        console.log('ERROR', err);
         msg.channel.send({
-          content: `${err}`,
+          content: `No data found`,
         });
       });
   },
