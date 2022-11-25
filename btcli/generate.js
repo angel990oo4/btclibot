@@ -59,8 +59,12 @@ module.exports = {
             content: `${res.data.response[0]}`,
           });
         } else {
+          let result = res.data.response[0].split('\n');
+          // msg.channel.send({
+          //   content: `Prompt: ${result[0]}\nResponse: ${result.slice(1)}`,
+          // });
           msg.channel.send({
-            content: `${res.data.response[0]}`,
+            content: `Prompt: ${optionsInstance.prompt}\nResponse: ${res.data.response[0]}`,
           });
         }
       })
