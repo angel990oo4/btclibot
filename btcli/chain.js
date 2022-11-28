@@ -15,7 +15,9 @@ module.exports = {
             data = `The current block number is **${res?.data?.block}**`;
             break;
           case 'difficulty':
-            data = `The difficulty value is **${res?.data?.difficulty}**`;
+            data = `The difficulty value is **${
+              res?.data?.difficulty / 1000000000000
+            }T**`;
             break;
           case 'issuance':
             data = `The total issuance value is **${res?.data?.totalIssuance}**`;

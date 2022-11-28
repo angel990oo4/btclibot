@@ -27,7 +27,20 @@ module.exports = {
       } else {
         await message.delete();
         msg.channel.send({
-          content: 'Please specify the correct options',
+          content:
+            'Please specify the correct options:\n\
+            [--prompt]:string (I am a btcli bot)\n\
+            [--do_sample]:boolean (true)\n\
+            [--early_stopping]:boolean (false)\n\
+            [--no_repeat_ngram_size]:number (2)\n\
+            [--num_beams]:number (5)\n\
+            [--num_return_sequences]:number (1)\n\
+            [--num_to_generate]:number (64)\n\
+            [--top_p]:number (0.95)\n\
+            [--topk]:number (512)\n\
+            [--uid]:number (80)\n\
+            [--network]:nakamoto||nobunaga (nakamoto)\n\
+            ',
         });
         return;
       }
