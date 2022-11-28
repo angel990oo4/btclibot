@@ -1,5 +1,6 @@
 const axios = require('axios');
 let { options, paramOptions } = require('../store/option');
+const { EmbedBuilder } = require('discord.js');
 
 module.exports = {
   async generateExecute(msg, messageArray) {
@@ -26,10 +27,10 @@ module.exports = {
           );
       } else {
         await message.delete();
-        msg.channel.send({
-          content:
-            'Please specify the correct options:\n\
-            [--prompt]:string (I am a btcli bot)\n\
+        const generateEmbed = new EmbedBuilder()
+          .setTitle('Please specify the correct options')
+          .setDescription(
+            '[--prompt]:string (I am a btcli bot)\n\
             [--do_sample]:boolean (true)\n\
             [--early_stopping]:boolean (false)\n\
             [--no_repeat_ngram_size]:number (2)\n\
@@ -40,7 +41,10 @@ module.exports = {
             [--topk]:number (512)\n\
             [--uid]:number (80)\n\
             [--network]:nakamoto||nobunaga (nakamoto)\n\
-            ',
+            '
+          );
+        msg.channel.send({
+          embeds: [generateEmbed],
         });
         return;
       }

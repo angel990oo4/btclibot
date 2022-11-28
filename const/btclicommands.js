@@ -11,7 +11,7 @@ Same commands for emission, rank, trust, consensus, dividends\n\n\
 **$btcli difficulty**: Difficulty value\n\
 **$btcli issuance**: Total issuance\n\
 **$btcli next_halving**: The left time until next halving\n\
-**$btcli generate**: Bittensor reponse bot\n\
+**$btcli generate [options]**: Bittensor reponse bot\n\
 ';
 
 const factors = [
