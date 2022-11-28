@@ -150,20 +150,15 @@ client.on('messageCreate', async (msg) => {
       );
     } else if (messageArray[1] === 'generate') {
       generateExecute(msg, messageArray);
+    } else if (
+      messageArray.length === 2 &&
+      (messageArray[1] === '--help' ||
+        messageArray[1] === '—help' ||
+        messageArray[1] === 'help')
+    ) {
+      helpExecute(msg);
     } else {
       switch (discordMessage) {
-        case '$btcli': {
-          helpExecute(msg);
-          break;
-        }
-        case '$btcli --help': {
-          helpExecute(msg);
-          break;
-        }
-        case '$btcli —help': {
-          helpExecute(msg);
-          break;
-        }
         case '$btcli metagraph --raw': {
           metagraphExecuteRaw(msg);
           break;
