@@ -72,8 +72,9 @@ module.exports = {
           res.data.response[0] === 'Error! UID not synced, Request timeout.' ||
           res.data.response[0] === 'Error! Modality not implemented.'
         ) {
+          console.log('ERROR', res.data.response[0]);
           msg.channel.send({
-            content: `${res.data.response[0]}`,
+            content: `No data found`,
           });
         } else {
           let result = res.data.response[0].split('\n');

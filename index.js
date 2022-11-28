@@ -150,6 +150,8 @@ client.on('messageCreate', async (msg) => {
       );
     } else if (messageArray[1] === 'generate') {
       generateExecute(msg, messageArray);
+    } else if (messageArray.length === 1) {
+      helpExecute(msg);
     } else if (
       messageArray.length === 2 &&
       (messageArray[1] === '--help' ||
