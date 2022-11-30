@@ -159,6 +159,12 @@ client.on('messageCreate', async (msg) => {
         messageArray[1] === 'help')
     ) {
       helpExecute(msg);
+    } else if (
+      messageArray.length === 3 &&
+      messageArray[1] === 'help' &&
+      messageArray[2] === 'generate'
+    ) {
+      helpExecute(msg, 'generate');
     } else {
       switch (discordMessage) {
         case '$btcli metagraph --raw': {
