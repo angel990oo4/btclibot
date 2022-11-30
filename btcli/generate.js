@@ -29,8 +29,9 @@ module.exports = {
         await message.delete();
         const generateEmbed = new EmbedBuilder()
           .setColor(0xffff66)
-          .setTitle('⚠️ Please specify the correct options')
-          .setDescription('Type **$btcli help generate** to see the options');
+          .setDescription(
+            '⚠️ Please specify the correct options\n Type **$btcli help generate** to see the options'
+          );
         msg.channel.send({
           embeds: [generateEmbed],
         });

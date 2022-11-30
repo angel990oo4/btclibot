@@ -176,10 +176,15 @@ client.on('messageCreate', async (msg) => {
           break;
         }
         default:
+          const errorEmbed = new EmbedBuilder()
+            .setColor(0xee0000)
+            .setDescription(
+              `**$btcli: ${discordMessage.slice(
+                6
+              )}** is not a btcli command. See **$btcli --help**.`
+            );
           msg.channel.send({
-            content: `**$btcli: ${discordMessage.slice(
-              6
-            )}** is not a btcli command. See **$btcli --help**.`,
+            embeds: [errorEmbed],
           });
           break;
       }
