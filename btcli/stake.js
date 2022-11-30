@@ -24,13 +24,19 @@ module.exports = {
             );
             msg.channel.send({ embeds: [stakeEmbed] });
           } else {
-            msg.channel.send({ content: `No data` });
+            const errorEmbed = new EmbedBuilder()
+              .setColor(0xee0000)
+              .setDescription(`⚠️ No data found`);
+            msg.channel.send({ embeds: [errorEmbed] });
           }
         })
         .catch(async (err) => {
           console.log('err', err);
           await message.delete();
-          msg.channel.send({ content: `No data found ` });
+          const errorEmbed = new EmbedBuilder()
+            .setColor(0xee0000)
+            .setDescription(`⚠️ No data found`);
+          msg.channel.send({ embeds: [errorEmbed] });
         });
     }
   },
