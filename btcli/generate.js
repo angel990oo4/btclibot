@@ -28,7 +28,8 @@ module.exports = {
       } else {
         await message.delete();
         const generateEmbed = new EmbedBuilder()
-          .setTitle('Please specify the correct options')
+          .setColor(0xffff66)
+          .setTitle('⚠️ Please specify the correct options')
           .setDescription('Type **$btcli help generate** to see the options');
         msg.channel.send({
           embeds: [generateEmbed],
@@ -60,9 +61,10 @@ module.exports = {
           res.data.response[0] === 'Error! Modality not implemented.'
         ) {
           console.log('ERROR', res.data.response[0]);
-          msg.channel.send({
-            content: `No data found`,
-          });
+          const errorEmbed = new EmbedBuilder()
+            .setColor(0xee0000)
+            .setDescription(`⚠️ No data found`);
+          msg.channel.send({ embeds: [errorEmbed] });
         } else {
           let result = res.data.response[0].split('\n');
           // msg.channel.send({
