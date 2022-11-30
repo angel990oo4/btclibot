@@ -39,9 +39,10 @@ module.exports = {
       .catch(async (err) => {
         await message.delete();
         console.log('ERROR', err);
-        msg.channel.send({
-          content: `No data found`,
-        });
+        const errorEmbed = new EmbedBuilder()
+          .setColor(0xee0000)
+          .setDescription(`⚠️ No data found`);
+        msg.channel.send({ embeds: [errorEmbed] });
       });
   },
 
@@ -154,9 +155,10 @@ module.exports = {
       .catch(async (err) => {
         await message.delete();
         console.log('ERROR', err);
-        msg.channel.send({
-          content: `No data found`,
-        });
+        const errorEmbed = new EmbedBuilder()
+          .setColor(0xee0000)
+          .setDescription(`⚠️ No data found`);
+        msg.channel.send({ embeds: [errorEmbed] });
       });
   },
 
@@ -192,9 +194,10 @@ module.exports = {
       .catch(async (err) => {
         await message.delete();
         console.log('ERROR', err);
-        msg.channel.send({
-          content: `No data found`,
-        });
+        const errorEmbed = new EmbedBuilder()
+          .setColor(0xee0000)
+          .setDescription(`⚠️ No data found`);
+        msg.channel.send({ embeds: [errorEmbed] });
       });
   },
 };
