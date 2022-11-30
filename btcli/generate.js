@@ -29,20 +29,7 @@ module.exports = {
         await message.delete();
         const generateEmbed = new EmbedBuilder()
           .setTitle('Please specify the correct options')
-          .setDescription(
-            '[--prompt]:string (I am a btcli bot)\n\
-            [--do_sample]:boolean (true)\n\
-            [--early_stopping]:boolean (false)\n\
-            [--no_repeat_ngram_size]:number (2)\n\
-            [--num_beams]:number (5)\n\
-            [--num_return_sequences]:number (1)\n\
-            [--num_to_generate]:number (64)\n\
-            [--top_p]:number (0.95)\n\
-            [--topk]:number (512)\n\
-            [--uid]:number (80)\n\
-            [--network]:nakamoto||nobunaga (nakamoto)\n\
-            '
-          );
+          .setDescription('Type **$btcli help generate** to see the options');
         msg.channel.send({
           embeds: [generateEmbed],
         });
