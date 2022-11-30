@@ -5,8 +5,11 @@ const { EmbedBuilder } = require('discord.js');
 module.exports = {
   async stakeExecute(uid, msg) {
     if (!validUID(uid)) {
+      const errorEmbed = new EmbedBuilder()
+        .setColor(0xee0000)
+        .setDescription(`⚠️ UID should be an integer between 0 and 4095`);
       msg.channel.send({
-        content: `*UID should be an integer between 0 and 4095*`,
+        embeds: [errorEmbed],
       });
     } else {
       const message = await msg.channel.send({ content: 'loading data...' });
