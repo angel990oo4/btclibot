@@ -6,7 +6,8 @@ const BtcliCommands =
 **$btcli incentive**: The plot of sorted incentive value \n\
 **$btcli incentive --raw**: The csv file of incentive value \n\
 **$btcli incentive --raw [--[ascending/descending]]**: The csv file of (optionally) sorted incentive values \n\
-Same commands for emission, rank, trust, consensus, dividends\n\n\
+**$btcli incentive --uid [uid] --range [days]**: The incentive values of a certain uid for last days \n\
+Same commands for emission, rank, trust, consensus, dividends, stake\n\n\
 **$btcli block**: Current block number\n\
 **$btcli difficulty**: Difficulty value\n\
 **$btcli issuance**: Total issuance\n\
