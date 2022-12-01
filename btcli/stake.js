@@ -17,11 +17,13 @@ module.exports = {
         .then(async (NeuronData) => {
           await message.delete();
           if (NeuronData?.data?.neuron?.[Number(uid)]?.stake) {
-            const stakeEmbed = new EmbedBuilder().setDescription(
-              `UID:**${uid}** has **τ${
-                NeuronData?.data?.neuron?.[Number(uid)].stake / 1000000000
-              }** staked `
-            );
+            const stakeEmbed = new EmbedBuilder()
+              .setColor('#4caf50')
+              .setDescription(
+                `UID:**${uid}** has **τ${
+                  NeuronData?.data?.neuron?.[Number(uid)].stake / 1000000000
+                }** staked `
+              );
             msg.channel.send({ embeds: [stakeEmbed] });
           } else {
             const errorEmbed = new EmbedBuilder()

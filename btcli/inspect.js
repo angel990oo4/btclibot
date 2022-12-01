@@ -16,6 +16,7 @@ module.exports = {
           let NeuronData = res?.data?.neuron;
           if (NeuronData?.[Number(uid)]?.stake) {
             const inspectEmbed = new EmbedBuilder()
+              .setColor('#4caf50')
               .setTitle(`The neuron data of UID ${uid}`)
               .setDescription(
                 `**hotkey**: ${

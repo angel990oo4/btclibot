@@ -30,7 +30,9 @@ module.exports = {
           default:
             break;
         }
-        const chainEmbed = new EmbedBuilder().setDescription(`${data}`);
+        const chainEmbed = new EmbedBuilder()
+          .setColor('#4caf50')
+          .setDescription(`${data}`);
         msg.channel.send({
           embeds: [chainEmbed],
         });
