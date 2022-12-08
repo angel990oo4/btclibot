@@ -16,9 +16,9 @@ Same commands for `emission`, `rank`, `trust`, `consensus`, `dividends`, `stake`
 **$btcli difficulty**: Difficulty value\n\
 **$btcli issuance**: Total issuance\n\
 **$btcli next_halving**: The left time until next halving\n\
-**$btcli generate [options]**: Bittensor reponse\n\
-Type **$btcli help generate** to see the options\n\
 ';
+// **$btcli generate [options]**: Bittensor reponse\n\
+// Type **$btcli help generate** to see the options\n\
 
 const GenerateOptions =
   '**--prompt [prompt]** (Default: I am a btcli bot)\n\
