@@ -41,6 +41,7 @@ const {
   MessageEmbed,
   MessageAttachment,
   AttachmentBuilder,
+  Partials,
 } = require('discord.js');
 const { token, dbusername, dbpassword, dbname } = require('./config');
 
@@ -50,7 +51,9 @@ const client = new Client({
     GatewayIntentBits.GuildMessages,
     GatewayIntentBits.MessageContent,
     GatewayIntentBits.GuildMessageReactions,
+    GatewayIntentBits.DirectMessages,
   ],
+  partials: [Partials.Channel],
 });
 
 client.commands = new Collection();
