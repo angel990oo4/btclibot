@@ -13,6 +13,7 @@ const {
   factorExecuteRaw,
   factorHistoryExecute,
 } = require('./btcli/factor');
+const { allowExecute } = require('./btcli/allow');
 const { chainParameterExecute } = require('./btcli/chain');
 const { factors, chain } = require('./const/btclicommands');
 const modalevent = require('./events/modal');
@@ -106,7 +107,9 @@ client.on('messageCreate', async (msg) => {
   const discordMessage = msg.content.replace(/\s+/g, ' ');
   const messageArray = discordMessage.split(' ');
   if (discordMessage.slice(0, 6) === '$btcli' && discordMessage.length <= 80) {
-    if (
+    if (messageArray.length == 2 && messageArray[1] === 'allow') {
+      allowExecute(msg);
+    } else if (
       messageArray.length == 4 &&
       messageArray[1] === 'stake' &&
       (messageArray[2] === '--uid' || messageArray[2] === '—uid')
