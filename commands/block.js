@@ -1,5 +1,6 @@
-const { SlashCommandBuilder } = require('discord.js');
-const wait = require('node:timers/promises').setTimeout;
+const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
+
+const { requestChain } = require('../utils/data');
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -8,6 +9,22 @@ module.exports = {
 
   async execute(interaction) {
     await interaction.deferReply({ ephemeral: true });
-    await interaction.editReply(`Current block number`);
+    requestChain()
+      .then(async (res) => {
+        const chainEmbed = new EmbedBuilder()
+          .setColor('#4caf50')
+          .setDescription(
+            `The current block number is **${res?.data?.block}**`
+          );
+
+        await interaction.editReply({ embeds: [chainEmbed] });
+      })
+      .catch(async (err) => {
+        console.log('ERROR', err);
+        const errorEmbed = new EmbedBuilder()
+          .setColor(0xee0000)
+          .setDescription(`⚠️ No data found`);
+        await interaction.editReply({ embeds: [errorEmbed] });
+      });
   },
 };
