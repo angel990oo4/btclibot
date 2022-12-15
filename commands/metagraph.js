@@ -4,7 +4,7 @@ const { requestData } = require('../utils/data');
 
 module.exports = {
   data: new SlashCommandBuilder()
-    .setName('matagraph')
+    .setName('metagraph')
     .setDescription('Metagraph raw value'),
 
   async execute(interaction) {
