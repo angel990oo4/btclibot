@@ -1,6 +1,5 @@
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
-
-const { requestData } = require('../utils/data');
+const axios = require('axios');
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -38,28 +37,56 @@ module.exports = {
 
   async execute(interaction) {
     await interaction.deferReply({ ephemeral: true });
-    const uid = '0';
-    requestData()
-      .then(async (NeuronData) => {
-        if (NeuronData?.data?.neuron?.[Number(uid)]?.stake) {
-          const stakeEmbed = new EmbedBuilder()
-            .setColor('#4caf50')
-            .setDescription(
-              `UID:**${uid}** has **τ${
-                NeuronData?.data?.neuron?.[Number(uid)].stake / 1000000000
-              }** staked `
-            );
-          await interaction.editReply({ embeds: [stakeEmbed] });
-        } else {
+    const prompt =
+      interaction.options.getString('--prompt') ?? 'I am a btcli bot';
+    const uid = interaction.options.getString('--uid') ?? '80';
+    const network = interaction.options.getString('--network') ?? 'nakamoto';
+    const no_repeat_ngram_size =
+      interaction.options.getString('--no_repeat_ngram_size') ?? '2';
+    const num_beams = interaction.options.getString('--num_beams') ?? '5';
+    const num_return_sequences =
+      interaction.options.getString('--num_return_sequences') ?? '1';
+    const num_to_generate =
+      interaction.options.getString('--num_to_generate') ?? '5';
+    const top_p = interaction.options.getString('--top_p') ?? '0.95';
+    const topk = interaction.options.getString('--topk') ?? '512';
+    const do_sample = interaction.options.getString('--do_sample') ?? 'true';
+    const early_stopping =
+      interaction.options.getString('--early_stopping') ?? 'false';
+
+    await axios
+      .post('https://playground-api.bittensor.com/seq2seq', {
+        do_sample: do_sample === 'true' ? true : false,
+        early_stopping: early_stopping === 'true' ? true : false,
+        network: network,
+        no_repeat_ngram_size: Number(no_repeat_ngram_size),
+        num_beams: Number(num_beams),
+        num_return_sequences: Number(num_return_sequences),
+        num_to_generate: Number(num_to_generate),
+        prompt: prompt,
+        top_p: Number(top_p),
+        topk: Number(topk),
+        uid: uid.split(',').map((i) => Number(i)),
+      })
+      .then(async (res) => {
+        if (
+          res.data.response[0] === 'Error! Endpoint not available.' ||
+          res.data.response[0] === 'Error! UID not synced, Request timeout.' ||
+          res.data.response[0] === 'Error! Modality not implemented.'
+        ) {
+          console.log('ERROR', res.data.response[0]);
           const errorEmbed = new EmbedBuilder()
             .setColor(0xee0000)
             .setDescription(`⚠️ No data found`);
           await interaction.editReply({ embeds: [errorEmbed] });
+        } else {
+          await interaction.editReply({
+            content: `Prompt: ${prompt}\nResponse: ${res.data.response[0]}`,
+          });
         }
       })
       .catch(async (err) => {
-        console.log('err', err);
-        await message.delete();
+        console.log('ERROR', err);
         const errorEmbed = new EmbedBuilder()
           .setColor(0xee0000)
           .setDescription(`⚠️ No data found`);

@@ -36,7 +36,6 @@ module.exports = {
       })
       .catch(async (err) => {
         console.log('err', err);
-        await message.delete();
         const errorEmbed = new EmbedBuilder()
           .setColor(0xee0000)
           .setDescription(`⚠️ No data found`);
