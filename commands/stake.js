@@ -14,7 +14,7 @@ module.exports = {
     ),
 
   async execute(interaction) {
-    await interaction.deferReply({ ephemeral: true });
+    await interaction.deferReply({ ephemeral: false });
     const uid = interaction.options.getString('--uid') ?? '0';
     requestData()
       .then(async (NeuronData) => {

@@ -12,7 +12,7 @@ module.exports = {
     .setDescription('Metagraph raw value'),
 
   async execute(interaction) {
-    await interaction.deferReply({ ephemeral: true });
+    await interaction.deferReply({ ephemeral: false });
     requestData()
       .then(async (res) => {
         let NeuronData = res?.data?.neuron;

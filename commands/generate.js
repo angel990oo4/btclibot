@@ -36,7 +36,7 @@ module.exports = {
     ),
 
   async execute(interaction) {
-    await interaction.deferReply({ ephemeral: true });
+    await interaction.deferReply({ ephemeral: false });
     const prompt =
       interaction.options.getString('--prompt') ?? 'I am a btcli bot';
     const uid = interaction.options.getString('--uid') ?? '80';

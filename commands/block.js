@@ -8,7 +8,7 @@ module.exports = {
     .setDescription('Querying the latest block number!'),
 
   async execute(interaction) {
-    await interaction.deferReply({ ephemeral: true });
+    await interaction.deferReply({ ephemeral: false });
     requestChain()
       .then(async (res) => {
         const chainEmbed = new EmbedBuilder()
